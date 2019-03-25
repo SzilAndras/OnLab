@@ -14,7 +14,7 @@ export class VehicleSettingComponent implements OnInit {
   }
 
   onNext() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['reservation/appointment']);
   }
 
 }
