@@ -6,14 +6,14 @@
 
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="#">Főoldal</a></li>
-        <li><a href="#">Foglalás</a></li>
+        <li routerLinkActive="active"><a routerLink="/home">Főoldal</a></li>
+        <li routerLinkActive="active"><a [routerLink]="['/reservation']">Foglalás</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" role="button">Felhasz <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Profil</a></li>
+            <li ><a href="/profile">Profil</a></li>
             <li><a href="#">Foglalásaim</a></li>
             <li><a href="#">Kijelentkezés</a></li>
           </ul>

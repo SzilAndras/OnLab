@@ -13,6 +13,26 @@ import { VehicleSettingComponent } from './reservation/vehicle-setting/vehicle-s
 import { AppointmentComponent } from './reservation/appointment/appointment.component';
 import { OverviewComponent } from './reservation/overview/overview.component';
 import { ReservationHeaderComponent } from './reservation/reservation-header/reservation-header.component';
+import {RouterModule, Routes} from '@angular/router';
+import { ProfileComponent } from './profile/profile.component';
+import { NewsItemComponent } from './home/news/news-item/news-item.component';
+import { ContactComponent } from './home/informations/contact/contact.component';
+import { AddressComponent } from './home/informations/address/address.component';
+import { CompanyInformationComponent } from './home/informations/company-information/company-information.component';
+import { FullNewsComponent } from './home/full-news/full-news.component';
+
+const appRouts: Routes = [
+  {path: 'home', component: HomeComponent, children: [
+      {path: '', component: NewsComponent},
+      {path: 'news/:id', component: FullNewsComponent}
+    ]},
+  {path: 'reservation', component: ReservationComponent, children: [
+      {path: 'vehicle', component: VehicleSettingComponent},
+      {path: 'appointment', component: AppointmentComponent},
+      {path: 'overview', component: OverviewComponent}
+    ]},
+  {path: 'profile', component: ProfileComponent}
+];
 
 @NgModule({
   declarations: [
@@ -27,10 +47,17 @@ import { ReservationHeaderComponent } from './reservation/reservation-header/res
     VehicleSettingComponent,
     AppointmentComponent,
     OverviewComponent,
-    ReservationHeaderComponent
+    ReservationHeaderComponent,
+    ProfileComponent,
+    NewsItemComponent,
+    ContactComponent,
+    AddressComponent,
+    CompanyInformationComponent,
+    FullNewsComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(appRouts)
   ],
   providers: [],
   bootstrap: [AppComponent]
