@@ -20,6 +20,10 @@ import { ContactComponent } from './home/informations/contact/contact.component'
 import { AddressComponent } from './home/informations/address/address.component';
 import { CompanyInformationComponent } from './home/informations/company-information/company-information.component';
 import { FullNewsComponent } from './home/full-news/full-news.component';
+import {FormsModule} from '@angular/forms';
+import {NgDatepickerModule} from 'ng2-datepicker';
+import {HttpClientModule} from '@angular/common/http';
+import {DatePipe} from '@angular/common';
 
 const appRouts: Routes = [
   {path: 'home', component: HomeComponent, children: [
@@ -57,9 +61,12 @@ const appRouts: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRouts)
+    RouterModule.forRoot(appRouts),
+    FormsModule,
+    NgDatepickerModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

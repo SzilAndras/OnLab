@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ReservationService} from '../../services/reservation.service';
 
 @Component({
   selector: 'app-overview',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OverviewComponent implements OnInit {
 
-  constructor() { }
+  constructor(public resService: ReservationService) { }
 
   ngOnInit() {
+  }
+
+  onConfirm(){
+    this.resService.create();
   }
 
 }

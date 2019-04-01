@@ -1,3 +1,29 @@
-<p>
-  appointment works!
-</p>
+
+<div class="container">
+  <br>
+  <div class="datepicker-container" >
+    <ng-datepicker [(ngModel)]="date" [options]="options"></ng-datepicker>
+  </div>
+  <br>
+  <hr>
+  <br>
+  <div class="table-responsive">
+    <table class="table">
+        <tr class="table table-bordered tab">
+          <th *ngFor="let c of timeTable; let i = index" > {{i}}</th>
+        </tr>
+        <tr class="table">
+          <td *ngFor="let cell of timeTable; let j = index"
+              ngClass="{{cell === 'SELECTED' ? 'info ' : (cell === 'RESERVED' ? 'danger' : 'success')}}"
+              (click)="onCellSelected(j)"
+              style="cursor: pointer;">
+            {{cell}}
+          </td>
+        </tr>
+    </table>
+  </div>
+  <hr>
+  <div class="text-right">
+    <button class="btn btn-primary btn-lg" (click)="onNext()">Tovább</button>
+  </div>
+</div>
