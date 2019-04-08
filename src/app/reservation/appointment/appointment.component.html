@@ -2,7 +2,7 @@
 <div class="container">
   <br>
   <div class="datepicker-container" >
-    <ng-datepicker [(ngModel)]="date" [options]="options"></ng-datepicker>
+    <ng-datepicker [(ngModel)]="date" [options]="options" (ngModelChange)="dateOnChange()"></ng-datepicker>
   </div>
   <br>
   <hr>
@@ -10,17 +10,25 @@
   <div class="table-responsive">
     <table class="table">
         <tr class="table table-bordered tab">
-          <th *ngFor="let c of timeTable; let i = index" > {{i}}</th>
+          <th *ngFor="let c of timeTable; let i = index" > {{c.time}}</th>
         </tr>
         <tr class="table">
           <td *ngFor="let cell of timeTable; let j = index"
-              ngClass="{{cell === 'SELECTED' ? 'info ' : (cell === 'RESERVED' ? 'danger' : 'success')}}"
+              ngClass="{{cell.status === 'SELECTED' ? 'info ' : (cell.status === 'RESERVED' ? 'danger' : 'success')}}"
               (click)="onCellSelected(j)"
               style="cursor: pointer;">
-            {{cell}}
+            {{cell.status}}
           </td>
         </tr>
     </table>
+  </div>
+  <br>
+  <hr>
+  <br>
+  <div>
+    <div class="md-form">
+      <textarea type="text" [(ngModel)]="comment" class="md-textarea form-control"></textarea>
+    </div>
   </div>
   <hr>
   <div class="text-right">

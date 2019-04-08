@@ -10,15 +10,13 @@ export class Reservation {
 
   private _vin: string;
 
-  private _works: Array<{work: string, time: string, price: number}>;
+  private _works: Array<{work: string, time: number, price: number, state: string}>;
 
-  private _appointment: {day: Date, time: string[]};
+  private _appointments: Array<{day: string, time: string, state: string, type: string}>;
 
-  private _comments: Array<{authorId: number, content: string}>;
+  private _comments: Array<{comment: string}>;
 
   private _state: string;
-
-  private _suggestedAppointment: Array<{day: string, time: string}>;
 
 
   constructor(userID: number) {
@@ -28,10 +26,9 @@ export class Reservation {
     this._plateNumber = '';
     this._vin = '';
     this._works = [];
-    this._appointment = {day: null, time: []};
+    this._appointments = [];
     this._comments = [];
-    this._state = '';
-    this._suggestedAppointment = [];
+    this._state = 'Pending';
 
   }
 
@@ -67,27 +64,27 @@ export class Reservation {
     this._vin = value;
   }
 
-  get works(): Array<{ work: string; time: string; price: number }> {
+  get works(): Array<{work: string, time: number, price: number, state: string}> {
     return this._works;
   }
 
-  set works(value: Array<{ work: string; time: string; price: number }>) {
+  set works(value: Array<{work: string, time: number, price: number, state: string}>) {
     this._works = value;
   }
 
-  get appointment(): { day: Date; time: string[] } {
-    return this._appointment;
+  get appointments(): Array<{day: string, time: string, state: string, type: string}> {
+    return this._appointments;
   }
 
-  set appointment(value: { day: Date; time: string[] }) {
-    this._appointment = value;
+  set appointments(value: Array<{day: string, time: string, state: string, type: string}>) {
+    this._appointments = value;
   }
 
-  get comments(): Array<{ authorId: number; content: string }> {
+  get comments(): Array<{comment: string}> {
     return this._comments;
   }
 
-  set comments(value: Array<{ authorId: number; content: string }>) {
+  set comments(value: Array<{comment: string}>) {
     this._comments = value;
   }
 
@@ -99,11 +96,4 @@ export class Reservation {
     this._state = value;
   }
 
-  get suggestedAppointment(): Array<{ day: string; time: string }> {
-    return this._suggestedAppointment;
-  }
-
-  set suggestedAppointment(value: Array<{ day: string; time: string }>) {
-    this._suggestedAppointment = value;
-  }
 }

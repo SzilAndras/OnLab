@@ -1,18 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Router} from '@angular/router';
 import {DatepickerOptions} from 'ng2-datepicker';
 import {ReservationService} from '../../services/reservation.service';
 import {CellStatus} from '../../Models/cell-status.enum';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-appointment',
   templateUrl: './appointment.component.html',
   styleUrls: ['./appointment.component.css']
 })
-export class AppointmentComponent implements OnInit {
-  timeTable: Array<CellStatus>;
-
+export class AppointmentComponent implements OnInit{
+  timeTable: Array<{status: CellStatus, time: string}>;
   date: Date;
+  comment: string;
   options: DatepickerOptions = {
     minYear: new Date(Date.now()).getFullYear(),
     maxYear: new Date(Date.now() + (86400000 * 14)).getFullYear(),
@@ -30,33 +31,47 @@ export class AppointmentComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private resService: ReservationService
+    private resService: ReservationService,
+    private datepipe: DatePipe
     ) { }
 
   ngOnInit() {
     this.timeTable = this.resService.timeTable;
-    this.timeTable[4] = CellStatus.Reserved;
+    this.comment = this.resService.reservation.comments[0].comment;
     console.log(this.timeTable);
     this.date = new Date();
-    if(this.resService.reservation.appointment.day !== null){
-      this.date = this.resService.reservation.appointment.day;
-    }
-
   }
 
   onNext() {
-    this.resService.reservation.appointment.day = this.date;
+    this.resService.timeTable = this.timeTable;
+    for (let i = 0; i < this.timeTable.length; i++){
+      if(this.timeTable[i].status === CellStatus.Selected){
+        console.log(this.date);
+        console.log(this.datepipe.transform(this.date, 'yyyy-MM-dd'));
+        this.resService.reservation.appointments.push({day: this.datepipe.transform(this.date, 'yyyy-MM-dd'), time: ('' + (8 + (i) * 0.5 )), type: 'Takeover', state: 'Selected'}); /*this.datepipe.transform(this.date, 'yyyy-MM-dd')*/
+      }
+    }
+    this.resService.reservation.comments = [{comment: this.comment}];
     this.router.navigate(['reservation/overview']);
   }
 
   onCellSelected(idx: number){
-    if(this.timeTable[idx] !== CellStatus.Reserved){
-      if(this.timeTable[idx] === CellStatus.Selected){
-        this.timeTable[idx] = CellStatus.Empty;
+    if(this.timeTable[idx].status !== CellStatus.Reserved){
+      if(this.timeTable[idx].status === CellStatus.Selected){
+        this.timeTable[idx].status = CellStatus.Empty;
       } else {
-        this.timeTable[idx] = CellStatus.Selected;
+        this.timeTable[idx].status = CellStatus.Selected;
       }
     }
+  }
+
+  dateOnChange(): void {
+    console.log('onChange');
+    console.log(this.date);
+    this.resService.refreshTimeTable(this.date);
+    this.timeTable = this.resService.timeTable;
+    console.log(this.date);
+
   }
 
 }

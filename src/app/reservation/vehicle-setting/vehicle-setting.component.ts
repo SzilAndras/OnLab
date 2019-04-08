@@ -14,7 +14,7 @@ export class VehicleSettingComponent implements OnInit {
 
   vin: string;
 
-  works: Array<{work: string, time: string, price: number}>;
+  works: Array<{work: string, time: number, price: number}>;
 
   newWork: string;
 
@@ -34,7 +34,7 @@ export class VehicleSettingComponent implements OnInit {
 
   onNewWork(){
     if(this.newWork.length > 2){
-      this.works.push({work: this.newWork, time: null, price: null});
+      this.works.push({work: this.newWork, time: 0, price: 0});
       this.newWork = '';
     }
   }
