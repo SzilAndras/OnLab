@@ -1,0 +1,21 @@
+<h3>Foglalások:</h3>
+<div>
+  <ul class="list-group row">
+    <li *ngFor="let res of reservations; let i = index" class="list-group-item" (click)="onSelect(res.id)">
+      <p>
+        Típus: {{res.vehicleType}}
+      </p>
+      <p>
+        Rendszám: {{res.plateNumber}}
+      </p>
+      <p>
+        Alvázszám: {{res.vin}}
+      </p>
+      <p>
+        Foglalás állapota: {{res.state}}
+      </p>
+
+    </li>
+  </ul>
+</div>
+

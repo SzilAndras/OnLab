@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ReservationService} from '../services/reservation.service';
+import {NewReservationService} from '../services/new-reservation.service';
 
 @Component({
   selector: 'app-reservation',
@@ -8,7 +8,7 @@ import {ReservationService} from '../services/reservation.service';
 })
 export class ReservationComponent implements OnInit {
 
-  constructor(private resService: ReservationService) { }
+  constructor(private resService: NewReservationService) { }
 
   ngOnInit() {
   }

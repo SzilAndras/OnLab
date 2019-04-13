@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {ReservationService} from '../../services/reservation.service';
+import {NewReservationService} from '../../services/new-reservation.service';
+import {Work} from '../../Models/interfaces/work';
+import {Status} from '../../Models/enums/status.enum';
 
 @Component({
   selector: 'app-vehicle-setting',
@@ -14,11 +16,13 @@ export class VehicleSettingComponent implements OnInit {
 
   vin: string;
 
-  works: Array<{work: string, time: number, price: number}>;
+  works: Work[];
 
   newWork: string;
 
-  constructor(private router: Router, public resService: ReservationService) { }
+  constructor(
+    private router: Router,
+    public resService: NewReservationService) { }
 
   ngOnInit() {
     this.vehicleType = this.resService.reservation.vehicleType;
@@ -34,7 +38,7 @@ export class VehicleSettingComponent implements OnInit {
 
   onNewWork(){
     if(this.newWork.length > 2){
-      this.works.push({work: this.newWork, time: 0, price: 0});
+      this.works.push({id: undefined, work: this.newWork, time: 0, price: 0, state: Status.Pending});
       this.newWork = '';
     }
   }

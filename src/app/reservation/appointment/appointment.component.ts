@@ -1,9 +1,11 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {DatepickerOptions} from 'ng2-datepicker';
-import {ReservationService} from '../../services/reservation.service';
-import {CellStatus} from '../../Models/cell-status.enum';
+import {NewReservationService} from '../../services/new-reservation.service';
+import {CellStatus} from '../../Models/enums/cell-status.enum';
 import {DatePipe} from '@angular/common';
+import {AppointmentType} from '../../Models/enums/appointment-type.enum';
+import {AppointmentState} from '../../Models/enums/appointment-state.enum';
 
 @Component({
   selector: 'app-appointment',
@@ -31,33 +33,45 @@ export class AppointmentComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private resService: ReservationService,
+    private resService: NewReservationService,
     private datepipe: DatePipe
     ) { }
 
   ngOnInit() {
     this.timeTable = this.resService.timeTable;
-    this.comment = this.resService.reservation.comments[0].comment;
+    if(this.resService.reservation.comments[0] !== undefined){
+      this.comment = this.resService.reservation.comments[0].comment;
+    } else {
+      this.comment = '';
+    }
+
     console.log(this.timeTable);
     this.date = new Date();
   }
 
   onNext() {
     this.resService.timeTable = this.timeTable;
-    for (let i = 0; i < this.timeTable.length; i++){
-      if(this.timeTable[i].status === CellStatus.Selected){
+    for (let i = 0; i < this.timeTable.length; i++) {
+      if (this.timeTable[i].status === CellStatus.Selected) {
         console.log(this.date);
         console.log(this.datepipe.transform(this.date, 'yyyy-MM-dd'));
-        this.resService.reservation.appointments.push({day: this.datepipe.transform(this.date, 'yyyy-MM-dd'), time: ('' + (8 + (i) * 0.5 )), type: 'Takeover', state: 'Selected'}); /*this.datepipe.transform(this.date, 'yyyy-MM-dd')*/
+        this.resService.reservation.appointments.push(
+          {
+            id: undefined,
+            day: this.datepipe.transform(this.date, 'yyyy-MM-dd'),
+            time: ('' + (8 + (i) * 0.5 )),
+            type: AppointmentType.Takeover,
+            state: AppointmentState.Selected
+          }); /*this.datepipe.transform(this.date, 'yyyy-MM-dd')*/
       }
     }
-    this.resService.reservation.comments = [{comment: this.comment}];
+    this.resService.reservation.comments.push({comment: this.comment, commentNumber: 0});
     this.router.navigate(['reservation/overview']);
   }
 
-  onCellSelected(idx: number){
-    if(this.timeTable[idx].status !== CellStatus.Reserved){
-      if(this.timeTable[idx].status === CellStatus.Selected){
+  onCellSelected(idx: number) {
+    if (this.timeTable[idx].status !== CellStatus.Reserved){
+      if (this.timeTable[idx].status === CellStatus.Selected){
         this.timeTable[idx].status = CellStatus.Empty;
       } else {
         this.timeTable[idx].status = CellStatus.Selected;

@@ -24,6 +24,10 @@ import {FormsModule} from '@angular/forms';
 import {NgDatepickerModule} from 'ng2-datepicker';
 import {HttpClientModule} from '@angular/common/http';
 import {DatePipe} from '@angular/common';
+import { ActualReservationsComponent } from './actual-reservations/actual-reservations.component';
+import { ReservationListComponent } from './actual-reservations/reservation-list/reservation-list.component';
+import { ReservationDetailsComponent } from './actual-reservations/reservation-details/reservation-details.component';
+import {NewReservationService} from './services/new-reservation.service';
 
 const appRouts: Routes = [
   {path: 'home', component: HomeComponent, children: [
@@ -35,7 +39,8 @@ const appRouts: Routes = [
       {path: 'appointment', component: AppointmentComponent},
       {path: 'overview', component: OverviewComponent}
     ]},
-  {path: 'profile', component: ProfileComponent}
+  {path: 'profile', component: ProfileComponent},
+  {path: 'actual-reservations', component: ActualReservationsComponent}
 ];
 
 @NgModule({
@@ -57,7 +62,10 @@ const appRouts: Routes = [
     ContactComponent,
     AddressComponent,
     CompanyInformationComponent,
-    FullNewsComponent
+    FullNewsComponent,
+    ActualReservationsComponent,
+    ReservationListComponent,
+    ReservationDetailsComponent
   ],
   imports: [
     BrowserModule,

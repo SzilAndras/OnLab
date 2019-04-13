@@ -34,24 +34,30 @@
 
   <hr>
 
-  <p>{{resService.reservation.appointments.day}}</p>
 
   <br>
 
   <div class="table-responsive">
     <table class="table">
       <tr class="table table-bordered tab">
-        <th *ngFor="let c of resService.timeTable; let i = index" > {{i}}</th>
+        <th *ngFor="let c of resService.timeTable; let i = index" > {{c.time}}</th>
       </tr>
       <tr class="table">
         <td *ngFor="let cell of resService.timeTable; let j = index"
-            ngClass="{{cell === 'SELECTED' ? 'info ' : (cell === 'RESERVED' ? 'danger' : 'success')}}">
-          {{cell}}
+            ngClass="{{cell.status === 'SELECTED' ? 'info ' : (cell.status === 'RESERVED' ? 'danger' : 'success')}}">
+          {{cell.status}}
         </td>
       </tr>
     </table>
   </div>
 
+  <hr>
+  <div>
+    <h4>Megjegyzés:</h4>
+    <p *ngIf="resService.reservation.comments[0].comment !== undefined">
+      {{this.comment}}
+    </p>
+  </div>
   <hr>
 
   <div class="text-right">
