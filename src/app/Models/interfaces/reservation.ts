@@ -5,9 +5,9 @@ import {Status} from '../enums/status.enum';
 
 
 export interface Reservation {
-  id: number;
+  id?: number;
 
-  userId: number;
+  userId?: number;
 
   vehicleType: string;
 

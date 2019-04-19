@@ -22,12 +22,15 @@ import { CompanyInformationComponent } from './home/informations/company-informa
 import { FullNewsComponent } from './home/full-news/full-news.component';
 import {FormsModule} from '@angular/forms';
 import {NgDatepickerModule} from 'ng2-datepicker';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {DatePipe} from '@angular/common';
 import { ActualReservationsComponent } from './actual-reservations/actual-reservations.component';
 import { ReservationListComponent } from './actual-reservations/reservation-list/reservation-list.component';
 import { ReservationDetailsComponent } from './actual-reservations/reservation-details/reservation-details.component';
 import {NewReservationService} from './services/new-reservation.service';
+import { SigninComponent } from './auth/signin/signin.component';
+import { SignupComponent } from './auth/signup/signup.component';
+import {AuthInterceptor} from './services/http/auth-interceptor';
 
 const appRouts: Routes = [
   {path: 'home', component: HomeComponent, children: [
@@ -40,7 +43,9 @@ const appRouts: Routes = [
       {path: 'overview', component: OverviewComponent}
     ]},
   {path: 'profile', component: ProfileComponent},
-  {path: 'actual-reservations', component: ActualReservationsComponent}
+  {path: 'actual-reservations', component: ActualReservationsComponent},
+  {path: 'signup', component: SignupComponent},
+  {path: 'signin', component: SigninComponent}
 ];
 
 @NgModule({
@@ -65,7 +70,9 @@ const appRouts: Routes = [
     FullNewsComponent,
     ActualReservationsComponent,
     ReservationListComponent,
-    ReservationDetailsComponent
+    ReservationDetailsComponent,
+    SigninComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +81,11 @@ const appRouts: Routes = [
     NgDatepickerModule,
     HttpClientModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

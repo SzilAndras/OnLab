@@ -7,11 +7,13 @@
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active"><a routerLink="/home">Főoldal</a></li>
-        <li routerLinkActive="active"><a [routerLink]="['/reservation/vehicle']">Foglalás</a></li>
-        <li routerLinkActive="active"><a [routerLink]="['/actual-reservations']">Aktuális foglalások</a></li>
+        <li routerLinkActive="active" *ngIf="isLoggedIn()"><a [routerLink]="['/reservation/vehicle']">Foglalás</a></li>
+        <li routerLinkActive="active" *ngIf="isLoggedIn()"><a [routerLink]="['/actual-reservations']">Aktuális foglalások</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
+        <!--<li *ngIf="!isLoggedIn()"><a routerLink="/signin">Bejelentkezés</a></li>
+        <li *ngIf="!isLoggedIn()"><a routerLink="/signup">Regisztáció</a></li>-->
+        <li  *ngIf="false" class="dropdown">
           <a href="#" class="dropdown-toggle" role="button">Felhasz <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li ><a href="/profile">Profil</a></li>
@@ -21,13 +23,12 @@
         </li>
       </ul>
       <div class="nav navbar-btn navbar-right" >
-        <button class="btn btn-default btn-primary" type="button">Bejelentkezés</button>
+        <button *ngIf="!isLoggedIn()" class="btn btn-default btn-primary" type="button" routerLink="/signin">Bejelentkezés</button>
+        <button *ngIf="!isLoggedIn()" class="btn btn-default btn-primary" type="button" routerLink="/signup">Regisztáció</button>
       </div>
-
-
-
-
-
+      <div class="nav navbar-btn navbar-right" >
+        <button *ngIf="isLoggedIn()" class="btn btn-default btn-primary" type="button" (click)="logout()">Kijelentkezés</button>
+      </div>
     </div>
   </div>
 </nav>

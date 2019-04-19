@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {UserService} from '../services/user.service';
+import {Router} from '@angular/router';
+import {NewReservationService} from '../services/new-reservation.service';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UserService,
+              private router: Router,
+              private resService: NewReservationService) { }
 
   ngOnInit() {
+  }
+
+
+  public isLoggedIn(): boolean{
+    return this.userService.isLoggedIn();
+  }
+
+  public logout(){
+    this.userService.logout();
+    this.router.navigate(['signin']);
+    this.resService.refreshReservation();
   }
 
 }

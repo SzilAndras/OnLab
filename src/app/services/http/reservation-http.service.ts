@@ -8,23 +8,24 @@ import {map} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ReservationHttpService {
+  url = 'http://localhost:3000/reservation/';
 
   constructor(private httpClient: HttpClient) { }
 
   getAllReservation() {
-    return this.httpClient.get<Reservation[]>('http://localhost:3000/reservation/findAll');
+    return this.httpClient.get<Reservation[]>(this.url + 'findAll');
   }
 
   getReservationById(id: number){
-    return this.httpClient.get<Reservation>('http://localhost:3000/reservation/findById/' + id);
+    return this.httpClient.get<Reservation>(this.url + 'findById/' + id);
   }
 
   createNewReservation(reservation: Reservation) {
-    return this.httpClient.post('http://localhost:3000/reservation/save', reservation);
+    return this.httpClient.post(this.url + 'save', reservation);
   }
 
-  getUserReservations(id: number){
-    return this.httpClient.get<Reservation[]>('http://localhost:3000/reservation/findByUserId=' + id);
+  getUserReservations(){
+    return this.httpClient.get<Reservation[]>(this.url + 'findByUser');
   }
 
   getDateAppointments(dateStr: string){

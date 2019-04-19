@@ -25,6 +25,7 @@ export class VehicleSettingComponent implements OnInit {
     public resService: NewReservationService) { }
 
   ngOnInit() {
+    console.log(this.resService.reservation);
     this.vehicleType = this.resService.reservation.vehicleType;
     this.plateNumber = this.resService.reservation.plateNumber;
     this.vin = this.resService.reservation.vin;
@@ -37,10 +38,15 @@ export class VehicleSettingComponent implements OnInit {
   }
 
   onNewWork(){
+    console.log(this.works);
+    if(this.works === undefined){
+      this.works = [];
+    }
     if(this.newWork.length > 2){
       this.works.push({id: undefined, work: this.newWork, time: 0, price: 0, state: Status.Pending});
       this.newWork = '';
     }
+    console.log(this.works);
   }
 
   onSaveInf(){

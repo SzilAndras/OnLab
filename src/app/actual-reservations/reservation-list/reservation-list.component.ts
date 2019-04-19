@@ -20,7 +20,7 @@ export class ReservationListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.resHttpService.getUserReservations(this.userService.userId).subscribe(
+    this.resHttpService.getUserReservations().subscribe(
       (response) => {
         this.reservations = response;
         console.log(this.reservations);

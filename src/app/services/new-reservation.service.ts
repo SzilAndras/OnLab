@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {Reservation} from '../Models/interfaces/reservation';
 import {DatePipe} from '@angular/common';
 import {UserService} from './user.service';
@@ -10,7 +10,7 @@ import {Status} from '../Models/enums/status.enum';
 @Injectable({
   providedIn: 'root'
 })
-export class NewReservationService {
+export class NewReservationService implements OnInit{
   private _reservation: Reservation;
   private _timeTable: Array<{status: CellStatus, time: string}>;
 
@@ -19,22 +19,10 @@ export class NewReservationService {
     private userService: UserService,
     private reservationHttp: ReservationHttpService
     ) {
-    this.reservation = {
-      id: 0,
-      comments: [],
-      appointments: [],
-      works: [],
-      plateNumber: '',
-      vehicleType: '',
-      state: Status.Pending,
-      vin: '',
-      userId: this.userService.userId
-    };
-    this.timeTable = [];
+    this.refreshReservation();
+  }
 
-    for (let i = 0; i < 15; i++) {
-      this.timeTable.push({status: CellStatus.Empty, time: ('' + (8 + (i) * 0.5 ))});
-    }
+  ngOnInit(): void {
   }
 
 
@@ -56,9 +44,8 @@ export class NewReservationService {
     this._timeTable = value;
   }
 
-  refreshReservation(){
+  refreshReservation() {
     this.reservation = {
-      id: 0,
       comments: [],
       appointments: [],
       works: [],
@@ -66,7 +53,6 @@ export class NewReservationService {
       vehicleType: '',
       state: Status.Pending,
       vin: '',
-      userId: this.userService.userId
     };
     this.timeTable = [];
     for (let i = 0; i < 15; i++) {
@@ -74,32 +60,28 @@ export class NewReservationService {
     }
   }
 
-
-
-refreshTimeTable(date: Date){
-  this.timeTable = [];
-  for (let i = 0; i < 15; i++) {
-    this.timeTable.push({status: CellStatus.Empty, time: ('' + (8 + (i) * 0.5 ))});
-  }
-  const dateStr = this.datepipe.transform(date, 'yyyy-MM-dd');
-  this.reservationHttp.getDateAppointments(dateStr).subscribe(
-    (response) => {
-      for (const cell of this.timeTable) {
-        for (const app of response) {
-          if (app.time === cell.time && (app.state === AppointmentState.Accepted || app.state === AppointmentState.Suggested)){
-            cell.status = CellStatus.Reserved;
-            console.log(cell);
-            console.log(app);
+  refreshTimeTable(date: Date){
+    this.timeTable = [];
+    for (let i = 0; i < 15; i++) {
+      this.timeTable.push({status: CellStatus.Empty, time: ('' + (8 + (i) * 0.5 ))});
+    }
+    const dateStr = this.datepipe.transform(date, 'yyyy-MM-dd');
+    this.reservationHttp.getDateAppointments(dateStr).subscribe(
+      (response) => {
+        for (const cell of this.timeTable) {
+          for (const app of response) {
+            if (app.time === cell.time && (app.state === AppointmentState.Accepted || app.state === AppointmentState.Suggested)){
+              cell.status = CellStatus.Reserved;
+              console.log(cell);
+              console.log(app);
+            }
           }
         }
+      },
+      (error) => {
+        console.log(error);
+        return [];
       }
-    },
-    (error) => {
-      console.log(error);
-      return [];
-    }
-  );
-}
-
-
+    );
+  }
 }
