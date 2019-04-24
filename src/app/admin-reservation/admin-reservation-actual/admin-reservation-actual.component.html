@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <label>Állapot</label>
+      <div>
+        <select (change)="onSelect($event.target.value)" [(ngModel)]="selectedStatus">
+          <option *ngFor="let x of statusDropdown" [value]="x.state">{{x.text}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <label>Rendszám</label>
+      <div>
+        <input [(ngModel)]="plateNumberFiler">
+      </div>
+
+    </div>
+
+    <div class="col-sm-4">
+      <label>Típus</label>
+      <div>
+        <input [(ngModel)]="typeFilter">
+      </div>
+
+    </div>
+
+  </div>
+
+  <br>
+
+  <div *ngIf="reservations !== []">
+    <ul class="list-group row">
+      <ng-container *ngFor="let res of reservations; let i = index" >
+        <li *ngIf="res.plateNumber.includes(plateNumberFiler) && res.vehicleType.includes(typeFilter)" class="list-group-item" (click)="onSelect(res.id)">
+          <p>
+            Típus: {{res.vehicleType}}
+          </p>
+          <p>
+            Rendszám: {{res.plateNumber}}
+          </p>
+          <p>
+            Alvázszám: {{res.vin}}
+          </p>
+          <p>
+            Foglalás állapota: {{res.state}}
+          </p>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+
+</div>

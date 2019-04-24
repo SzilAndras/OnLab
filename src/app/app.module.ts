@@ -31,6 +31,9 @@ import {NewReservationService} from './services/new-reservation.service';
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import {AuthInterceptor} from './services/http/auth-interceptor';
+import { AdminReservationComponent } from './admin-reservation/admin-reservation.component';
+import { AdminReservationHeaderComponent } from './admin-reservation/admin-reservation-header/admin-reservation-header.component';
+import { AdminReservationActualComponent } from './admin-reservation/admin-reservation-actual/admin-reservation-actual.component';
 
 const appRouts: Routes = [
   {path: 'home', component: HomeComponent, children: [
@@ -44,6 +47,7 @@ const appRouts: Routes = [
     ]},
   {path: 'profile', component: ProfileComponent},
   {path: 'actual-reservations', component: ActualReservationsComponent},
+  {path: 'admin-reservations', component: AdminReservationComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'signin', component: SigninComponent}
 ];
@@ -72,7 +76,10 @@ const appRouts: Routes = [
     ReservationListComponent,
     ReservationDetailsComponent,
     SigninComponent,
-    SignupComponent
+    SignupComponent,
+    AdminReservationComponent,
+    AdminReservationHeaderComponent,
+    AdminReservationActualComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-<h3>Foglalások:</h3>
+<h3>Foglalások</h3>
 <div>
   <ul class="list-group row">
     <li *ngFor="let res of reservations; let i = index" class="list-group-item" (click)="onSelect(res.id)">
@@ -14,7 +14,6 @@
       <p>
         Foglalás állapota: {{res.state}}
       </p>
-
     </li>
   </ul>
 </div>

@@ -15,7 +15,6 @@ export class ReservationListComponent implements OnInit {
 
   constructor(
     private readonly resHttpService: ReservationHttpService,
-    private readonly userService: UserService,
     private readonly selectService: ActualReservationsService
   ) { }
 

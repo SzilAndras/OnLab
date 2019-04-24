@@ -1,18 +1,17 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a href="#" class="navbar-brand">Header</a>
+      <a class="navbar-brand">Header</a>
     </div>
 
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active"><a routerLink="/home">Főoldal</a></li>
-        <li routerLinkActive="active" *ngIf="isLoggedIn()"><a [routerLink]="['/reservation/vehicle']">Foglalás</a></li>
-        <li routerLinkActive="active" *ngIf="isLoggedIn()"><a [routerLink]="['/actual-reservations']">Aktuális foglalások</a></li>
+        <li routerLinkActive="active" *ngIf="isLoggedIn() && !isAdmin()"><a [routerLink]="['/reservation/vehicle']">Foglalás</a></li>
+        <li routerLinkActive="active" *ngIf="isLoggedIn() && !isAdmin()"><a [routerLink]="['/actual-reservations']">Aktuális foglalások</a></li>
+        <li routerLinkActive="active" *ngIf="isLoggedIn() && isAdmin()"><a [routerLink]="['/admin-reservations']">Foglalások</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <!--<li *ngIf="!isLoggedIn()"><a routerLink="/signin">Bejelentkezés</a></li>
-        <li *ngIf="!isLoggedIn()"><a routerLink="/signup">Regisztáció</a></li>-->
         <li  *ngIf="false" class="dropdown">
           <a href="#" class="dropdown-toggle" role="button">Felhasz <span class="caret"></span></a>
           <ul class="dropdown-menu">

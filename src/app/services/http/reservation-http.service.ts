@@ -16,6 +16,10 @@ export class ReservationHttpService {
     return this.httpClient.get<Reservation[]>(this.url + 'findAll');
   }
 
+  getReservationsByState(state: String) {
+    return this.httpClient.get<Reservation[]>(this.url + 'findByState/' + state);
+  }
+
   getReservationById(id: number){
     return this.httpClient.get<Reservation>(this.url + 'findById/' + id);
   }

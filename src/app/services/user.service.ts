@@ -47,6 +47,18 @@ export class UserService implements OnInit {
     return (localStorage.getItem('auth_token') !== null && localStorage.getItem('user_role') !== null);
   }
 
+  public isAdmin() {
+    if (this.isLoggedIn()) {
+      if (localStorage.getItem('user_role') === 'User') {
+        return false;
+      } else if (localStorage.getItem('user_role') === 'Admin') {
+        return true;
+      } else {
+        return null;
+      }
+    }
+  }
+
   public getToken() {
     if (this.isLoggedIn()) {
       return localStorage.getItem('auth_token');

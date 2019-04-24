@@ -18,8 +18,12 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  public isLoggedIn(): boolean{
+  public isLoggedIn(): boolean {
     return this.userService.isLoggedIn();
+  }
+
+  public isAdmin(): boolean {
+    return this.userService.isAdmin();
   }
 
   public logout(){
