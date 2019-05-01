@@ -34,6 +34,10 @@ import {AuthInterceptor} from './services/http/auth-interceptor';
 import { AdminReservationComponent } from './admin-reservation/admin-reservation.component';
 import { AdminReservationHeaderComponent } from './admin-reservation/admin-reservation-header/admin-reservation-header.component';
 import { AdminReservationActualComponent } from './admin-reservation/admin-reservation-actual/admin-reservation-actual.component';
+import {MustMatchDirective} from './auth/signup/must-match.directive';
+import { AdminReservationEditComponent } from './admin-reservation/admin-reservation-edit/admin-reservation-edit.component';
+import { ReservationFilterComponent } from './shared/reservation/reservation-filter/reservation-filter.component';
+import { TimeTableComponent } from './shared/time-table/time-table.component';
 
 const appRouts: Routes = [
   {path: 'home', component: HomeComponent, children: [
@@ -79,7 +83,11 @@ const appRouts: Routes = [
     SignupComponent,
     AdminReservationComponent,
     AdminReservationHeaderComponent,
-    AdminReservationActualComponent
+    AdminReservationActualComponent,
+    MustMatchDirective,
+    AdminReservationEditComponent,
+    ReservationFilterComponent,
+    TimeTableComponent,
   ],
   imports: [
     BrowserModule,

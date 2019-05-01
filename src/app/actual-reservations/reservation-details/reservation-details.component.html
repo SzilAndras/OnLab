@@ -1,39 +1,28 @@
-<h3>Részletek</h3>
-<div *ngIf="reservation !== undefined" class="container">
+
+<div *ngIf="reservation !== undefined">
+  <h3>Részletek ({{reservation.plateNumber}})</h3>
   <div>
     <h4>Feladatok</h4>
-    <div>
-      <ul class="list-group row">
-        <li *ngFor="let work of reservation.works; let i = index" class="list-group-item col-md-8">
+      <ul class="list-group">
+        <li *ngFor="let work of reservation.works; let i = index" class="list-group-item">
           {{i+1}}.  {{work.work}}
         </li>
       </ul>
-    </div>
   </div>
   <br>
   <div>
     <h4>Időpontok</h4>
-    <!--Táblázatban megjelenítés-->
     <div *ngFor="let app of reservation.appointments">
-      {{app.day | date: 'yyyy/MM/dd'}}
-      {{app.time}}
+      {{app.day | date: 'yyyy/MM/dd'}},
+      idő: {{app.time}} óra,
+      Állapot:
       <div *ngIf="app.state === 'Accepted'; else pending">
         Elfogadva
       </div>
       <ng-template #pending>
         Függőben
       </ng-template>
-
     </div>
-<!--    <ul class="list-group row">
-
-      <li *ngFor="let app of reservation.appointments" class="list-group-itme">
-        {{app.day}}
-        {{app.time}}
-        {{app.type}}
-        {{app.state}}
-      </li>
-    </ul>-->
   </div>
   <br>
   <div>

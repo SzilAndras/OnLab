@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {User} from '../../Models/interfaces/user';
 import {UserService} from '../../services/user.service';
@@ -13,6 +13,9 @@ import {NewReservationService} from '../../services/new-reservation.service';
 })
 export class SignupComponent implements OnInit {
   user: User;
+  @ViewChild('f') signupForm: NgForm;
+  password1;
+  password2;
 
   constructor(private userService: UserService,
               private userHttpService: UserHttpService,
@@ -29,12 +32,12 @@ export class SignupComponent implements OnInit {
     };
   }
 
-  async onSignup(form: NgForm) {
+  async onSignup() {
     this.user = {
-      email: form.value.email,
-      fullName: form.value.fullName,
-      phoneNumber: form.value.phoneNumber,
-      password: form.value.password
+      email: this.signupForm.value.email,
+      fullName: this.signupForm.value.fullName,
+      phoneNumber: this.signupForm.value.phoneNumber,
+      password: this.signupForm.value.password
     };
     await this.userService.register(this.user);
     this.router.navigate(['home']);

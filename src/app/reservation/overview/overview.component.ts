@@ -28,7 +28,7 @@ export class OverviewComponent implements OnInit {
     if(this.resService.reservation.comments[0].comment === undefined){
       this.resService.reservation.comments = [];
     }
-    await this.reservationHttp.createNewReservation(this.resService.reservation).subscribe((response) => {
+    await this.reservationHttp.saveReservation(this.resService.reservation).subscribe((response) => {
       console.log('Response: ');
       console.log(response);
       console.log(this.resService.reservation);

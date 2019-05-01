@@ -24,16 +24,12 @@ export class ReservationHttpService {
     return this.httpClient.get<Reservation>(this.url + 'findById/' + id);
   }
 
-  createNewReservation(reservation: Reservation) {
+  saveReservation(reservation: Reservation) {
+    console.log(reservation);
     return this.httpClient.post(this.url + 'save', reservation);
   }
 
   getUserReservations(){
     return this.httpClient.get<Reservation[]>(this.url + 'findByUser');
   }
-
-  getDateAppointments(dateStr: string){
-    return this.httpClient.get<Appointment[]>('http://localhost:3000/appointment/findAppointmentsByDate=' + dateStr);
-  }
-
 }

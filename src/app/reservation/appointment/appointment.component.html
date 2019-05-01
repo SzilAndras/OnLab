@@ -1,6 +1,3 @@
-
-<div class="container">
-  <br>
   <div class="datepicker-container" >
     <ng-datepicker [(ngModel)]="date" [options]="options" (ngModelChange)="dateOnChange()"></ng-datepicker>
   </div>
@@ -14,10 +11,12 @@
         </tr>
         <tr class="table">
           <td *ngFor="let cell of timeTable; let j = index"
-              ngClass="{{cell.status === 'SELECTED' ? 'info ' : (cell.status === 'RESERVED' ? 'danger' : 'success')}}"
-              (click)="onCellSelected(j)"
-              style="cursor: pointer;">
-            {{cell.status}}
+              ngClass="{{cell.status === 'Selected' ? 'info ' : (cell.status === 'Reserved' ? 'danger' : 'success')}}"
+              [ngSwitch]='cell.status'
+              (click)="onCellSelected(j)">
+              <p *ngSwitchCase="'Selected'" style="cursor: pointer">Kivál.</p>
+              <p *ngSwitchCase="'Empty'" style="cursor: pointer">Szabad</p>
+              <p *ngSwitchDefault style="cursor: not-allowed">Foglalt</p>
           </td>
         </tr>
     </table>
@@ -34,4 +33,4 @@
   <div class="text-right">
     <button class="btn btn-primary btn-lg" (click)="onNext()">Tovább</button>
   </div>
-</div>
+

@@ -1,4 +1,3 @@
-<div class="container">
   <div class="row">
     <div class="col-sm-4">
       <label>Állapot</label>
@@ -14,25 +13,24 @@
       <div>
         <input [(ngModel)]="plateNumberFiler">
       </div>
-
     </div>
-
     <div class="col-sm-4">
       <label>Típus</label>
       <div>
         <input [(ngModel)]="typeFilter">
       </div>
-
     </div>
-
   </div>
-
   <br>
 
+  <!--Táblázatban megjelenítés-->
   <div *ngIf="reservations !== []">
-    <ul class="list-group row">
+    <ul class="list-group">
       <ng-container *ngFor="let res of reservations; let i = index" >
-        <li *ngIf="res.plateNumber.includes(plateNumberFiler) && res.vehicleType.includes(typeFilter)" class="list-group-item" (click)="onSelect(res.id)">
+        <li
+          *ngIf="res.plateNumber.includes(plateNumberFiler) && res.vehicleType.includes(typeFilter)"
+          class="list-group-item"
+          (click)="onSelect(res.id)">
           <p>
             Típus: {{res.vehicleType}}
           </p>
@@ -49,5 +47,3 @@
       </ng-container>
     </ul>
   </div>
-
-</div>

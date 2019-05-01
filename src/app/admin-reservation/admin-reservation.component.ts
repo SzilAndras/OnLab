@@ -14,4 +14,9 @@ export class AdminReservationComponent implements OnInit {
   ngOnInit() {
   }
 
+  adminResCompFiltered(filter){
+    console.log('FILTER:  ');
+    console.log(filter);
+  }
+
 }

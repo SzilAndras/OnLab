@@ -15,6 +15,10 @@ export class UserHttpService {
     return this.httpClient.get<User[]>(this.url + 'users');
   }
 
+  getUser(id: string){
+    return this.httpClient.get<User>(this.url + 'findUserById=' + id);
+  }
+
   register(data: User) {
     return this.httpClient.post<User>(this.url + 'register', data);
   }

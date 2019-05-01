@@ -1,25 +1,73 @@
 <div class="row">
   <div class="col-xs-10 col-sm-8 col-md-6 col-sm-offset-1 col-md-offset-3">
-    <form (ngSubmit)="onSignup(f)" #f="ngForm">
+    <form (ngSubmit)="onSignup()" #f="ngForm" [appMustMatch]="['password', 'password1']">
       <div class="form-group">
         <label for="email">Mail</label>
-        <input type="email" id="email" name="email" ngModel class="form-control">
+        <input
+          type="email"
+          id="email"
+          name="email"
+          ngModel
+          class="form-control"
+          email
+          required
+          #email="ngModel">
       </div>
-      <div class="form-group">
-        <label for="password">Jelszó</label>
-        <input type="password" id="password" name="password" ngModel class="form-control">
-      </div>
+      <span class="help-block" *ngIf="!email.valid && email.touched">Az e-mail cím nem megfelelő.</span>
       <div class="form-group">
         <label for="fullName">Teljes név</label>
-        <input type="text" id="fullName" name="fullName" ngModel class="form-control">
+        <input
+          type="text"
+          id="fullName"
+          name="fullName"
+          ngModel
+          class="form-control"
+          required
+          #fullName="ngModel">
       </div>
+      <span class="help-block" *ngIf="!fullName.valid && fullName.touched">Adja meg a nevét!</span>
       <div class="form-group">
         <label for="phoneNumber">Telefonszám</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" ngModel class="form-control">
+        <input
+          type="text"
+          id="phoneNumber"
+          name="phoneNumber"
+          ngModel
+          class="form-control"
+          required
+          #phoneNumber="ngModel">
       </div>
-      <button class="btn btn-primary" type="submit">Regisztrálás</button>
+      <span class="help-block" *ngIf="!phoneNumber.valid && phoneNumber.touched">Adja meg a telefonszámát!</span>
+      <div class="form-group">
+        <label for="password">Jelszó</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          class="form-control"
+          required
+          minlength="6"
+          #password="ngModel">
+      </div>
+      <span class="help-block" *ngIf="!password.valid && password.touched">A jelszónak legalább 6 karakter hosszúnak kell lennie!</span>
+      <div class="form-group">
+        <label for="password1">Jelszó újra</label>
+        <input
+          type="password"
+          id="password1"
+          name="password1"
+          ngModel
+          class="form-control"
+          required
+          minlength="6"
+          #password1="ngModel">
+      </div>
+      <span class="help-block" *ngIf="!password1.valid && password1.touched">A jelszavak nem egyeznek!</span>
+      <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Regisztrálás</button>
     </form>
   </div>
 </div>
+
 
 

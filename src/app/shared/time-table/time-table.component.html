@@ -1,0 +1,17 @@
+<div *ngIf="timeTable !== undefined && appointments !== undefined" class="table-responsive">
+  <table class="table">
+    <tr class="table table-bordered tab">
+      <th *ngFor="let c of timeTable; let i = index" > {{c.time}}</th>
+    </tr>
+    <tr class="table">
+      <td *ngFor="let cell of timeTable; let j = index"
+          ngClass="{{cell.status === 'Selected' ? 'info ' : (cell.status === 'Reserved' ? 'danger' : 'success')}}"
+          [ngSwitch]='cell.status'
+          (click)="onCellSelected(j)">
+        <p *ngSwitchCase="'Selected'" style="cursor: pointer">Kivál.</p>
+        <p *ngSwitchCase="'Empty'" style="cursor: pointer">Szabad</p>
+        <p *ngSwitchDefault style="cursor: not-allowed">Foglalt</p>
+      </td>
+    </tr>
+  </table>
+</div>

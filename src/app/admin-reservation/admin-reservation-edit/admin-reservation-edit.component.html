@@ -1,0 +1,90 @@
+<div *ngIf="reservation !== undefined && user !== undefined">
+
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Jármű</h4>
+      <ul class="list-group">
+        <li class="list-group-item">
+          {{reservation.plateNumber}}
+        </li>
+        <li class="list-group-item">
+          {{reservation.vehicleType}}
+        </li>
+        <li class="list-group-item">
+          {{reservation.vin}}
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h4>Foglaló</h4>
+      <ul class="list-group">
+        <li class="list-group-item">
+          {{user.fullName}}
+        </li>
+        <li class="list-group-item">
+          {{user.email}}
+        </li>
+        <li class="list-group-item">
+          {{user.phoneNumber}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr>
+
+  <div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Munka</th>
+        <th>Idő(perc)</th>
+        <th>Ár(Ft)</th>
+        <th>Állapot</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="form-group" *ngFor="let w of reservation.works">
+        <td>{{w.work}}</td>
+        <td><input class="form-control" [(ngModel)]="w.time"></td>
+        <td><input class="form-control" [(ngModel)]="w.price"></td>
+        <td>
+          <select class="form-control" [(ngModel)]="w.state">
+            <option [value]="'Pending'">Függőben</option>
+            <option [value]="'Accepted'">Elfogadva</option>
+            <option [value]="'Rejected'">Elutasítva</option>
+          </select>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <!--<button class="btn btn-success">Új munka</button>-->
+  </div>
+
+  <div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Összes idő(perc)</th>
+        <th>Összes ár(Ft)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{{valuesSum().timeSum}}</td>
+        <td>{{valuesSum().priceSum}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+
+  <app-time-table [date]="reservation.appointments[0].day"></app-time-table>
+
+
+  {{reservation.appointments}}
+  {{reservation.comments}}
+
+  <button class="btn btn-primary" (click)="onSave()">Mentés</button>
+</div>

@@ -1,58 +1,59 @@
-<div class="container">
-
   <div class="row">
     <div class="col-md-5">
-      <h4>Jármű adatai:</h4>
+      <h4>Jármű adatai</h4>
       <br>
       <div class="input-group">
-        <h5>Típus</h5>
         <p>{{resService.reservation.vehicleType}}</p>
       </div>
       <br>
       <div class="input-group">
-        <h5>Rendszám</h5>
         <p>{{resService.reservation.plateNumber}}</p>
       </div>
       <br>
       <div class="input-group">
-        <h5>Alvázszám</h5>
         <p>{{resService.reservation.vin}}</p>
       </div>
     </div>
 
     <div class="col-md-7">
-      <h4>Feladatok:</h4>
+      <h4>Feladatok</h4>
       <div>
-        <ul class="list-group row">
-          <li *ngFor="let work of resService.reservation.works; let i = index" class="list-group-item col-md-8">
+        <ul class="list-group">
+          <li *ngFor="let work of resService.reservation.works; let i = index" class="list-group-item">
             {{i+1}}.  {{work.work}}
           </li>
         </ul>
       </div>
     </div>
   </div>
-
   <hr>
-
 
   <br>
 
-  <div class="table-responsive">
-    <table class="table">
-      <tr class="table table-bordered tab">
-        <th *ngFor="let c of resService.timeTable; let i = index" > {{c.time}}</th>
-      </tr>
-      <tr class="table">
-        <td *ngFor="let cell of resService.timeTable; let j = index"
-            ngClass="{{cell.status === 'SELECTED' ? 'info ' : (cell.status === 'RESERVED' ? 'danger' : 'success')}}">
-          {{cell.status}}
-        </td>
-      </tr>
-    </table>
+  <h4>Időpont</h4>
+  <br>
+  <div *ngIf="resService.reservation.appointments[0] !== undefined">
+    {{resService.reservation.appointments[0].day | date: 'yyyy/MM/dd'}}
+    <br>
+    <div class="table-responsive">
+      <table class="table">
+        <tr class="table table-bordered tab">
+          <th *ngFor="let c of resService.timeTable; let i = index" > {{c.time}}</th>
+        </tr>
+        <tr class="table">
+          <td *ngFor="let cell of resService.timeTable; let j = index"
+              ngClass="{{cell.status === 'Selected' ? 'info ' : (cell.status === 'Reserved' ? 'danger' : 'success')}}"
+              [ngSwitch]='cell.status'>
+            <p *ngSwitchCase="'Selected'">Kivál.</p>
+            <p *ngSwitchCase="'Empty'">Szabad</p>
+            <p *ngSwitchDefault>Foglalt</p>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
-
   <hr>
-  <div>
+  <div *ngIf="resService.reservation.comments[0] !== undefined">
     <h4>Megjegyzés:</h4>
     <p *ngIf="resService.reservation.comments[0].comment !== undefined">
       {{this.comment}}
@@ -64,4 +65,3 @@
     <button class="btn btn-primary btn-lg" (click)="onConfirm()">Küldés</button>
   </div>
 
-</div>

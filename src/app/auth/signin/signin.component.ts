@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {UserService} from '../../services/user.service';
 import {UserHttpService} from '../../services/http/user-http.service';
@@ -10,6 +10,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit {
+  @ViewChild('f') signinForm: NgForm;
   user: {email: string, password: string};
 
 
@@ -22,13 +23,20 @@ export class SigninComponent implements OnInit {
     this.user = {email: '', password: ''};
   }
 
-  async onSignin(form: NgForm){
-    this.user.email = form.value.email;
-    this.user.password = form.value.password;
+  async onSignin(){
+    console.log(this.signinForm);
+    this.user.email = this.signinForm.value.email;
+    this.user.password = this.signinForm.value.password;
 
     await this.userService.login(this.user);
 
+/*
     this.router.navigate(['home']);
+*/
+  }
+
+  onSubmite(){
+
   }
 
 }

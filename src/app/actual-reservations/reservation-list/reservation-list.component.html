@@ -1,6 +1,6 @@
 <h3>Foglalások</h3>
 <div>
-  <ul class="list-group row">
+  <ul class="list-group">
     <li *ngFor="let res of reservations; let i = index" class="list-group-item" (click)="onSelect(res.id)">
       <p>
         Típus: {{res.vehicleType}}

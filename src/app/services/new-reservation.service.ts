@@ -6,6 +6,7 @@ import {CellStatus} from '../Models/enums/cell-status.enum';
 import {ReservationHttpService} from './http/reservation-http.service';
 import {AppointmentState} from '../Models/enums/appointment-state.enum';
 import {Status} from '../Models/enums/status.enum';
+import {AppointmentHttpService} from './http/appointment-http.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class NewReservationService implements OnInit{
   constructor(
     private datepipe: DatePipe,
     private userService: UserService,
-    private reservationHttp: ReservationHttpService
+    private reservationHttp: ReservationHttpService,
+    private appointmentHttpService: AppointmentHttpService
     ) {
     this.refreshReservation();
   }
@@ -66,7 +68,7 @@ export class NewReservationService implements OnInit{
       this.timeTable.push({status: CellStatus.Empty, time: ('' + (8 + (i) * 0.5 ))});
     }
     const dateStr = this.datepipe.transform(date, 'yyyy-MM-dd');
-    this.reservationHttp.getDateAppointments(dateStr).subscribe(
+    this.appointmentHttpService.getDateAppointments(dateStr).subscribe(
       (response) => {
         for (const cell of this.timeTable) {
           for (const app of response) {

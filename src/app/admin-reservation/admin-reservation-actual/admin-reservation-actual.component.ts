@@ -35,6 +35,7 @@ export class AdminReservationActualComponent implements OnInit {
   }
 
   refreshReservations() {
+    console.log('admin-reservations');
     if(this.selectedStatus === 'Pending' || this.selectedStatus === 'Accepted'){
       this.reservationHttpService.getReservationsByState(this.selectedStatus).subscribe(
         (response) => {
