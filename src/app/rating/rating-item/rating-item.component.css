@@ -1,0 +1,17 @@
+.panel{
+  margin-bottom: 10px;
+  word-break: break-word;
+}
+
+.panel-body{
+  padding: 10px;
+  white-space: pre-wrap;
+}
+
+.panel-body::before{
+  content: none;
+}
+
+.panel-body::after{
+  content: none;
+}

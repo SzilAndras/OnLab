@@ -1,0 +1,52 @@
+<form (ngSubmit) = "onSave()" #f = "ngForm" class="well">
+  <div class="form-group">
+    <label for="points">Ponozás:</label>
+    <select
+      class="form-control"
+      ngModel
+      #points="ngModel"
+      id="points"
+      name="points"
+      required>
+      <option *ngFor="let point of pointOptions" [value]="point.value">
+        {{ point.value }}
+      </option>
+    </select>
+  </div>
+  <span class="help-block" *ngIf="!points.valid && points.touched">Adjon meg egy pontszámot.</span>
+
+
+  <div class="form-group">
+    <label for="comment">Értékelés:</label>
+    <textarea
+      class="form-control"
+      rows="3"
+      id="comment"
+      ngModel
+      required
+      minlength="10"
+      maxlength="200"
+      name="comment"
+      #comment="ngModel"
+    ></textarea>
+  </div>
+  <span class="help-block" *ngIf="!comment.valid && comment.touched">Az értékelésnek legalább 10 karakter hosszúnak kell lennie és maximum 200-nak.</span>
+
+  <div class="text-right">
+    <div class="btn-group">
+      <button class="btn btn-default" type="button" (click)="onCancel()">
+        Mégse
+      </button>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!f.valid">
+        Küldés
+      </button>
+    </div>
+
+  </div>
+
+
+</form>
+

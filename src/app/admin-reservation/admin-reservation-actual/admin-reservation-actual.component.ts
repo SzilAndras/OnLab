@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Reservation} from '../../Models/interfaces/reservation';
+import {ReservationInterface} from '../../model/interfaces/reservation.interface';
 import {ReservationHttpService} from '../../services/http/reservation-http.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-reservation-actual',
@@ -17,12 +18,14 @@ export class AdminReservationActualComponent implements OnInit {
 
   selectedStatus: string;
 
-  reservations: Reservation[];
-  selectedReservation: Reservation;
+  reservations: ReservationInterface[];
+  selectedReservation: ReservationInterface;
   plateNumberFiler = '';
   typeFilter = '';
 
-  constructor(private reservationHttpService: ReservationHttpService) { }
+  constructor(
+    private reservationHttpService: ReservationHttpService,
+    private router: Router) { }
 
   ngOnInit() {
     this.reservations = [];
@@ -50,5 +53,11 @@ export class AdminReservationActualComponent implements OnInit {
         });
     }
   }
+
+  onResSelect(reId: number){
+    this.router.navigate(['/admin-reservations/isEdited/' + reId ]);
+
+  }
+
 
 }

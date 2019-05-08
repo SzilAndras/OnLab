@@ -25,12 +25,12 @@
 
   <!--Táblázatban megjelenítés-->
   <div *ngIf="reservations !== []">
-    <ul class="list-group">
+    <div class="list-group">
       <ng-container *ngFor="let res of reservations; let i = index" >
-        <li
+        <a
           *ngIf="res.plateNumber.includes(plateNumberFiler) && res.vehicleType.includes(typeFilter)"
           class="list-group-item"
-          (click)="onSelect(res.id)">
+          (click)="onResSelect(res.id)">
           <p>
             Típus: {{res.vehicleType}}
           </p>
@@ -41,9 +41,9 @@
             Alvázszám: {{res.vin}}
           </p>
           <p>
-            Foglalás állapota: {{res.state}}
+            Foglalás állapota: {{res.adminStatus}}
           </p>
-        </li>
+        </a>
       </ng-container>
-    </ul>
+    </div>
   </div>

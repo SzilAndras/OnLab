@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {DatepickerOptions} from 'ng2-datepicker';
 import {NewReservationService} from '../../services/new-reservation.service';
-import {CellStatus} from '../../Models/enums/cell-status.enum';
+import {CellStatus} from '../../model/enums/cell-status.enum';
 import {DatePipe} from '@angular/common';
-import {AppointmentType} from '../../Models/enums/appointment-type.enum';
-import {AppointmentState} from '../../Models/enums/appointment-state.enum';
+import {AppointmentType} from '../../model/enums/appointment-type.enum';
+import {AppointmentState} from '../../model/enums/appointment-state.enum';
 
 @Component({
   selector: 'app-appointment',
@@ -45,7 +45,6 @@ export class AppointmentComponent implements OnInit{
       this.comment = '';
     }
 
-    console.log(this.timeTable);
     this.date = new Date();
   }
 
@@ -53,8 +52,7 @@ export class AppointmentComponent implements OnInit{
     this.resService.timeTable = this.timeTable;
     for (let i = 0; i < this.timeTable.length; i++) {
       if (this.timeTable[i].status === CellStatus.Selected) {
-        console.log(this.date);
-        console.log(this.datepipe.transform(this.date, 'yyyy-MM-dd'));
+
         this.resService.reservation.appointments.push(
           {
             id: undefined,

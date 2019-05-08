@@ -1,0 +1,26 @@
+.accepted {
+  margin-bottom: 5px;
+  border-color: green;
+  background-color: limegreen;
+  cursor: pointer;
+}
+.pending {
+  margin-bottom: 5px;
+  border-color: orange;
+  background-color: #ffef64;
+  cursor: pointer;
+}
+
+.acceptable {
+  margin-bottom: 5px;
+  border-color: dodgerblue;
+  background-color: #7cc7ff;
+  cursor: pointer;
+}
+
+.rejected {
+  margin-bottom: 5px;
+  border-color: crimson;
+  background-color: #ff8789;
+  cursor: pointer;
+}

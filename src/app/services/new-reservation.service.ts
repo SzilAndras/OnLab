@@ -1,18 +1,18 @@
 import {Injectable, OnInit} from '@angular/core';
-import {Reservation} from '../Models/interfaces/reservation';
+import {ReservationInterface} from '../model/interfaces/reservation.interface';
 import {DatePipe} from '@angular/common';
 import {UserService} from './user.service';
-import {CellStatus} from '../Models/enums/cell-status.enum';
+import {CellStatus} from '../model/enums/cell-status.enum';
 import {ReservationHttpService} from './http/reservation-http.service';
-import {AppointmentState} from '../Models/enums/appointment-state.enum';
-import {Status} from '../Models/enums/status.enum';
+import {AppointmentState} from '../model/enums/appointment-state.enum';
+import {Status} from '../model/enums/status.enum';
 import {AppointmentHttpService} from './http/appointment-http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewReservationService implements OnInit{
-  private _reservation: Reservation;
+  private _reservation: ReservationInterface;
   private _timeTable: Array<{status: CellStatus, time: string}>;
 
   constructor(
@@ -21,19 +21,47 @@ export class NewReservationService implements OnInit{
     private reservationHttp: ReservationHttpService,
     private appointmentHttpService: AppointmentHttpService
     ) {
-    this.refreshReservation();
+    this.reservation = {
+      comments: [],
+      appointments: [],
+      works: [],
+      plateNumber: '',
+      vehicleType: '',
+      adminStatus: Status.Pending,
+      userStatus: Status.Pending,
+      vin: '',
+    };
+    this.timeTable = [];
+    for (let i = 0; i < 15; i++) {
+      this.timeTable.push({status: CellStatus.Empty, time: ('' + (8 + (i) * 0.5 ))});
+    }
+
   }
 
   ngOnInit(): void {
+    this.reservation = {
+      comments: [],
+      appointments: [],
+      works: [],
+      plateNumber: '',
+      vehicleType: '',
+      adminStatus: Status.Pending,
+      userStatus: Status.Pending,
+      vin: '',
+    };
+    this.timeTable = [];
+    for (let i = 0; i < 15; i++) {
+      this.timeTable.push({status: CellStatus.Empty, time: ('' + (8 + (i) * 0.5 ))});
+    }
   }
 
 
 
-  get reservation(): Reservation {
+  get reservation(): ReservationInterface {
     return this._reservation;
   }
 
-  set reservation(value: Reservation) {
+  set reservation(value: ReservationInterface) {
     this._reservation = value;
   }
 
@@ -53,7 +81,8 @@ export class NewReservationService implements OnInit{
       works: [],
       plateNumber: '',
       vehicleType: '',
-      state: Status.Pending,
+      adminStatus: Status.Pending,
+      userStatus: Status.Pending,
       vin: '',
     };
     this.timeTable = [];

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Reservation} from '../../Models/interfaces/reservation';
-import {User} from '../../Models/interfaces/user';
+import {ReservationInterface} from '../../model/interfaces/reservation.interface';
+import {UserInterface} from '../../model/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +12,18 @@ export class UserHttpService {
   constructor(private httpClient: HttpClient) { }
 
   getUsers() {
-    return this.httpClient.get<User[]>(this.url + 'users');
+    return this.httpClient.get<UserInterface[]>(this.url + 'users');
   }
 
   getUser(id: string){
-    return this.httpClient.get<User>(this.url + 'findUserById=' + id);
+    return this.httpClient.get<UserInterface>(this.url + 'findUserById=' + id);
   }
 
-  register(data: User) {
-    return this.httpClient.post<User>(this.url + 'register', data);
+  register(data: UserInterface) {
+    return this.httpClient.post<UserInterface>(this.url + 'register', data);
   }
 
   login(data: {email: string, password: string}){
-    return this.httpClient.post<User>(this.url + 'login', data);
+    return this.httpClient.post<UserInterface>(this.url + 'login', data);
   }
 }

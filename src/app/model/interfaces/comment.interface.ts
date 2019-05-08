@@ -1,5 +1,5 @@
 
-export interface Comment {
+export interface CommentInterface {
   comment: string;
   commentNumber: number;
 

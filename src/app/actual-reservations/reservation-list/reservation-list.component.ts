@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {Reservation} from '../../Models/interfaces/reservation';
-import {UserService} from '../../services/user.service';
+import {Component, OnInit} from '@angular/core';
+import {ReservationInterface} from '../../model/interfaces/reservation.interface';
 import {ReservationHttpService} from '../../services/http/reservation-http.service';
-import {map} from 'rxjs/operators';
 import {ActualReservationsService} from '../../services/actual-reservations.service';
+import {Status} from '../../model/enums/status.enum';
 
 @Component({
   selector: 'app-reservation-list',
@@ -11,7 +10,7 @@ import {ActualReservationsService} from '../../services/actual-reservations.serv
   styleUrls: ['./reservation-list.component.css']
 })
 export class ReservationListComponent implements OnInit {
-  reservations: Reservation[] = [];
+  reservations: ReservationInterface[] = [];
 
   constructor(
     private readonly resHttpService: ReservationHttpService,
@@ -22,7 +21,6 @@ export class ReservationListComponent implements OnInit {
     this.resHttpService.getUserReservations().subscribe(
       (response) => {
         this.reservations = response;
-        console.log(this.reservations);
       },
     (error) => {
         console.log(error);
@@ -31,6 +29,18 @@ export class ReservationListComponent implements OnInit {
 
   onSelect(id: number){
     this.selectService.elementSelected.emit(id);
+  }
+
+  isAcceptedByAdmin(reservation: ReservationInterface){
+    return reservation.adminStatus === Status.Accepted;
+  }
+
+  isAcceptedByUser(reservation: ReservationInterface) {
+    return reservation.userStatus === Status.Accepted;
+  }
+
+  isRejected(reservation: ReservationInterface) {
+    return (reservation.userStatus === Status.Rejected || reservation.adminStatus === Status.Rejected );
   }
 
 }

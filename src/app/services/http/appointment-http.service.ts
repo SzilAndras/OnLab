@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Appointment} from '../../Models/interfaces/appointment';
+import {AppointmentInterface} from '../../model/interfaces/appointment.interface';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
@@ -11,14 +11,14 @@ export class AppointmentHttpService {
   constructor(private httpClient: HttpClient) { }
 
   getDateAppointments(dateStr: string){
-    return this.httpClient.get<Appointment[]>(this.url + 'findAppointmentsByDate=' + dateStr);
+    return this.httpClient.get<AppointmentInterface[]>(this.url + 'findAppointmentsByDate=' + dateStr);
   }
 
-  updateAppointments(appointments: Appointment[]){
+  updateAppointments(appointments: AppointmentInterface[]){
     return this.httpClient.post(this.url + 'updateAppointments',  appointments);
   }
 
-  deleteAppointments(appointments: Appointment[]){
+  deleteAppointments(appointments: AppointmentInterface[]){
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       body: appointments
@@ -27,7 +27,7 @@ export class AppointmentHttpService {
   }
 
   getAppointmentsByResId(resId: number){
-    return this.httpClient.get<Appointment[]>(this.url + 'findAppointmentsResId=' + resId);
+    return this.httpClient.get<AppointmentInterface[]>(this.url + 'findAppointmentsResId=' + resId);
   }
 
 }

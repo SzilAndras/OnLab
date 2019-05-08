@@ -1,5 +1,5 @@
 import {Injectable, OnInit} from '@angular/core';
-import {User} from '../Models/interfaces/user';
+import {UserInterface} from '../model/interfaces/user.interface';
 import {UserHttpService} from './http/user-http.service';
 
 @Injectable({
@@ -29,7 +29,7 @@ export class UserService implements OnInit {
     localStorage.removeItem('user_role');
   }
 
-  async register(data: User) {
+  async register(data: UserInterface) {
     console.log(data);
     await this.userHttpService.register(data).subscribe(
       (response) => {
@@ -49,7 +49,7 @@ export class UserService implements OnInit {
 
   public isAdmin() {
     if (this.isLoggedIn()) {
-      if (localStorage.getItem('user_role') === 'User') {
+      if (localStorage.getItem('user_role') === 'UserInterface') {
         return false;
       } else if (localStorage.getItem('user_role') === 'Admin') {
         return true;

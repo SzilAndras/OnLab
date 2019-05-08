@@ -1,7 +1,16 @@
 <h3>Foglalások</h3>
 <div>
-  <ul class="list-group">
-    <li *ngFor="let res of reservations; let i = index" class="list-group-item" (click)="onSelect(res.id)">
+  <div class="list-group">
+    <a
+      *ngFor="let res of reservations; let i = index"
+      [ngClass]="{
+      'accepted' : (isAcceptedByAdmin(res) && isAcceptedByUser(res)),
+      'pending': (!isAcceptedByAdmin(res) && !isRejected(res)),
+      'rejected': isRejected(res),
+      'acceptable': (isAcceptedByAdmin(res) && !isAcceptedByUser(res) && !isRejected(res))
+      }"
+      class="list-group-item"
+      (click)="onSelect(res.id)">
       <p>
         Típus: {{res.vehicleType}}
       </p>
@@ -12,9 +21,10 @@
         Alvázszám: {{res.vin}}
       </p>
       <p>
-        Foglalás állapota: {{res.state}}
+        Foglalás állapota: {{res.adminStatus}}
       </p>
-    </li>
-  </ul>
+    </a>
+  </div>
 </div>
+
 

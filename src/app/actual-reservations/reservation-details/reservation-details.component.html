@@ -1,29 +1,109 @@
 
 <div *ngIf="reservation !== undefined">
   <h3>Részletek ({{reservation.plateNumber}})</h3>
+  <h4 *ngIf="isAcceptedByAdmin() && isAcceptedByUser()">A foglalás elfogadva.</h4>
+  <h4 *ngIf="!isAcceptedByAdmin() && !isRejected()">A foglalás a szerviz válaszára vár.</h4>
+  <h4 *ngIf="isAcceptedByAdmin() && !isAcceptedByUser() && !isRejected()">A foglalás az ön megerősítésére vár.</h4>
+  <h4 *ngIf="isRejected()">A foglalás el lett utasítva.</h4>
   <div>
-    <h4>Feladatok</h4>
-      <ul class="list-group">
-        <li *ngFor="let work of reservation.works; let i = index" class="list-group-item">
-          {{i+1}}.  {{work.work}}
-        </li>
-      </ul>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Dátum</th>
+          <th>Időpont</th>
+          <th>Esemény</th>
+          <th>Állapot</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let app of reservation.appointments">
+          <tr class="form-group" *ngIf="app.type !== 'Work'">
+
+            <td>{{app.day | date: 'yyyy/MM/dd'}}</td>
+            <td>{{app.time}} óra</td>
+
+            <td *ngIf="app.type === 'Takeover'">Átvétel</td>
+            <td *ngIf="app.type === 'Handover'">Átadás</td>
+
+            <td *ngIf="app.state === 'Accepted'">Elfogadva</td>
+            <td *ngIf="app.state === 'Selected'">Függőben</td>
+            <td *ngIf="app.state === 'Rejected'">Elutasítva</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
   </div>
-  <br>
   <div>
-    <h4>Időpontok</h4>
-    <div *ngFor="let app of reservation.appointments">
-      {{app.day | date: 'yyyy/MM/dd'}},
-      idő: {{app.time}} óra,
-      Állapot:
-      <div *ngIf="app.state === 'Accepted'; else pending">
-        Elfogadva
-      </div>
-      <ng-template #pending>
-        Függőben
-      </ng-template>
+    <p>Amennyiben nem megfelelő az átvétel időpontja válasszon másikat itt!</p>
+    <div *ngIf="handover !== undefined">
+      {{handover.day | date: 'yyyy/MM/dd'}}
+      {{handover.time}}
     </div>
+
+    <!--<button *ngIf="isEdited.handover === false" class="btn btn-primary" (click)="isEdited.handover = true">Szerkesztés</button>-->
+    <div *ngIf="selectHandover">
+      <div class="datepicker-container" >
+        <ng-datepicker [(ngModel)]="handoverDate" [options]="options" (ngModelChange)="onChangeHandoverDate()"></ng-datepicker>
+      </div>
+      <app-time-table
+        *ngIf="handoverDate !== undefined"
+        [date]="handoverDate"
+        [resId]="reservation.id"
+        [mode]="'single'"
+        [abelToSelect]="['Selected', 'Empty']"
+        [selectFor]="'Suggested'"
+        [typeFor]="'Handover'"
+        (selected)="onHandoverSelected($event)"></app-time-table>
+      <div class="btn-group pull-right">
+        <button class="btn btn-default" (click)="onCancelHandoverSelect()">Mégse</button>
+        <button class="btn btn-primary" (click)="selectHandover = false">Elrejt</button>
+      </div>
+    </div>
+    <button *ngIf="!selectHandover" class="btn btn-primary" (click)="selectHandover = true">Új választása</button>
   </div>
+
+  <div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Munka</th>
+        <th>Idő(perc)</th>
+        <th>Ár(Ft)</th>
+        <th>Állapot</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="form-group" *ngFor="let w of reservation.works">
+        <td>{{w.work}}</td>
+        <td>{{w.time}}</td>
+        <td>{{w.price}}</td>
+        <td *ngIf="w.state == 'Pending'">Függőben</td>
+        <td *ngIf="w.state == 'Accepted'">Elfogadva</td>
+        <td *ngIf="w.state == 'Rejected'">Elutasítva</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Összes idő(perc)</th>
+        <th>Összes ár(Ft)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{{valuesSum().timeSum}}</td>
+        <td>{{valuesSum().priceSum}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <br>
+
   <br>
   <div>
     <h4>Megjegyzések</h4>
@@ -33,5 +113,10 @@
         {{comm.comment}}
       </li>
     </ul>-->
+  </div>
+
+  <div class="btn-group pull-right">
+    <button [disabled]="!(!isRejected() && !(isAcceptedByUser() && isAcceptedByAdmin()))" class="btn btn-danger" (click)="onReject()">Elutasítás</button>
+    <button [disabled]="!(!isRejected() && (!isAcceptedByUser() && isAcceptedByAdmin()))" class="btn btn-primary" (click)="onAccept()">Elfogadás</button>
   </div>
 </div>

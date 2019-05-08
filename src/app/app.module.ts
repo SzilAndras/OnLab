@@ -6,8 +6,6 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { InformationsComponent } from './home/informations/informations.component';
 import { NewsComponent } from './home/news/news.component';
-import { RatingListComponent } from './home/rating-list/rating-list.component';
-import { RatingItemComponent } from './home/rating-list/rating-item/rating-item.component';
 import { ReservationComponent } from './reservation/reservation.component';
 import { VehicleSettingComponent } from './reservation/vehicle-setting/vehicle-setting.component';
 import { AppointmentComponent } from './reservation/appointment/appointment.component';
@@ -20,7 +18,7 @@ import { ContactComponent } from './home/informations/contact/contact.component'
 import { AddressComponent } from './home/informations/address/address.component';
 import { CompanyInformationComponent } from './home/informations/company-information/company-information.component';
 import { FullNewsComponent } from './home/full-news/full-news.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgDatepickerModule} from 'ng2-datepicker';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {DatePipe} from '@angular/common';
@@ -38,20 +36,29 @@ import {MustMatchDirective} from './auth/signup/must-match.directive';
 import { AdminReservationEditComponent } from './admin-reservation/admin-reservation-edit/admin-reservation-edit.component';
 import { ReservationFilterComponent } from './shared/reservation/reservation-filter/reservation-filter.component';
 import { TimeTableComponent } from './shared/time-table/time-table.component';
+import { CreateRatingComponent } from './rating/create-rating/create-rating.component';
+import {RatingListComponent} from './rating/rating-list/rating-list.component';
+import {RatingItemComponent} from './rating/rating-item/rating-item.component';
 
 const appRouts: Routes = [
-  {path: 'home', component: HomeComponent, children: [
-      {path: '', component: NewsComponent},
+  {path: 'home', component: HomeComponent,
+    children: [
+      {path: 'news', component: NewsComponent},
+      {path: 'rating', component: CreateRatingComponent},
       {path: 'news/:id', component: FullNewsComponent}
     ]},
-  {path: 'reservation', component: ReservationComponent, children: [
+  {path: 'reservation', component: ReservationComponent,
+    children: [
       {path: 'vehicle', component: VehicleSettingComponent},
       {path: 'appointment', component: AppointmentComponent},
       {path: 'overview', component: OverviewComponent}
     ]},
   {path: 'profile', component: ProfileComponent},
   {path: 'actual-reservations', component: ActualReservationsComponent},
-  {path: 'admin-reservations', component: AdminReservationComponent},
+  {path: 'admin-reservations', component: AdminReservationComponent, children: [
+      {path: 'isEdited/:id', component: AdminReservationEditComponent},
+      {path: 'list', component: AdminReservationActualComponent}
+    ]},
   {path: 'signup', component: SignupComponent},
   {path: 'signin', component: SigninComponent}
 ];
@@ -63,8 +70,6 @@ const appRouts: Routes = [
     HomeComponent,
     InformationsComponent,
     NewsComponent,
-    RatingListComponent,
-    RatingItemComponent,
     ReservationComponent,
     VehicleSettingComponent,
     AppointmentComponent,
@@ -88,13 +93,17 @@ const appRouts: Routes = [
     AdminReservationEditComponent,
     ReservationFilterComponent,
     TimeTableComponent,
+    CreateRatingComponent,
+    RatingListComponent,
+    RatingItemComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRouts),
     FormsModule,
     NgDatepickerModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [DatePipe, {
     provide: HTTP_INTERCEPTORS,

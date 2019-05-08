@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {NewReservationService} from '../../services/new-reservation.service';
-import {Work} from '../../Models/interfaces/work';
-import {Status} from '../../Models/enums/status.enum';
-import {Reservation} from '../../Models/interfaces/reservation';
+import {WorkInterface} from '../../model/interfaces/work.interface';
+import {Status} from '../../model/enums/status.enum';
+import {ReservationInterface} from '../../model/interfaces/reservation.interface';
+import {FormControl, NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-vehicle-setting',
@@ -11,7 +12,11 @@ import {Reservation} from '../../Models/interfaces/reservation';
   styleUrls: ['./vehicle-setting.component.css']
 })
 export class VehicleSettingComponent implements OnInit {
-  reservation: Reservation;
+/*
+  @ViewChild('f') vehicleForm: NgForm;
+*/
+
+  reservation: ReservationInterface;
 
   /*vehicleType: string;
 
@@ -19,9 +24,9 @@ export class VehicleSettingComponent implements OnInit {
 
   vin: string;
 
-  works: Work[];*/
+  works: WorkInterface[];*/
 
-  newWork: string;
+  newWork = '';
 
   constructor(
     private router: Router,
@@ -33,6 +38,7 @@ export class VehicleSettingComponent implements OnInit {
   }
 
   onNext() {
+    console.log(this.reservation);
     this.router.navigate(['reservation/appointment']);
   }
 
@@ -51,5 +57,11 @@ export class VehicleSettingComponent implements OnInit {
   onRemoveWork(idx: number){
     this.reservation.works.splice(idx, 1);
   }
+
+  /*isVehicleValid(){
+    console.log(this.vehicleForm);
+    console.log(this.vehicleForm.form.valid);
+    return this.vehicleForm.valid;
+  }*/
 
 }
