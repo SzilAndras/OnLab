@@ -43,7 +43,9 @@ export class TimeTableComponent implements OnInit, OnChanges {
   refreshTimeTable(date: Date){
     this.timeTable = [];
     for (let i = 0; i < 15; i++) {
-      this.timeTable.push({status: CellStatus.Empty, time: ('' + (8 + (i) * 0.5 ))});
+      const temp = (8 + (i) * 0.5 );
+      this.timeTable.push({status: CellStatus.Empty, time: (
+        '' + (temp - temp % 1) + ':' + (temp % 1 > 0 ? '30' : '00'))});
     }
     this.getResAppoints();
 

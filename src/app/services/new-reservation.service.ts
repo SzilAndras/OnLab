@@ -115,4 +115,15 @@ export class NewReservationService implements OnInit{
       }
     );
   }
+
+  isVehicleSettingsValid(){
+    return (this.reservation.vehicleType !== '' &&
+            this.reservation.plateNumber !== '' &&
+            this.reservation.vin !== '' &&
+            this.reservation.works.length > 0);
+  }
+
+  isAppointmentValid() {
+    return this.reservation.appointments.length > 0;
+  }
 }

@@ -27,18 +27,20 @@
 
             <td *ngIf="app.state === 'Accepted'">Elfogadva</td>
             <td *ngIf="app.state === 'Selected'">Függőben</td>
-            <td *ngIf="app.state === 'Rejected'">Elutasítva</td>
+            <td *ngIf="app.state === 'Suggested'">Javasolt</td>
           </tr>
         </ng-container>
       </tbody>
     </table>
   </div>
-  <div>
-    <p>Amennyiben nem megfelelő az átvétel időpontja válasszon másikat itt!</p>
-    <div *ngIf="handover !== undefined">
-      {{handover.day | date: 'yyyy/MM/dd'}}
-      {{handover.time}}
-    </div>
+  <div *ngIf="!isRejected() && !isAcceptedByUser() && isAcceptedByAdmin()">
+      <p>Amennyiben nem megfelelő az átadás időpontja válasszon másikat itt!</p>
+      <div *ngIf="handover !== undefined">
+        {{handover.day | date: 'yyyy/MM/dd'}}
+        {{handover.time}}
+      </div>
+
+
 
     <!--<button *ngIf="isEdited.handover === false" class="btn btn-primary" (click)="isEdited.handover = true">Szerkesztés</button>-->
     <div *ngIf="selectHandover">

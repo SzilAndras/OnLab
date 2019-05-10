@@ -1,0 +1,33 @@
+
+    <a
+      [ngClass] = "{'active': isSelected}"
+      class="list-group-item res-element row"
+      (click)="onSelect()">
+      <div class="col-md-10">
+        <p>
+          Típus: {{reservation.vehicleType}}
+        </p>
+        <p>
+          Rendszám: {{reservation.plateNumber}}
+        </p>
+        <p>
+          Alvázszám: {{reservation.vin}}
+        </p>
+      </div>
+      <div class="col-md-2">
+        <span *ngIf="(isPending())"
+              class="glyphicon glyphicon-question-sign pending"
+              data-toggle="tooltip" title="Függőben"></span>
+        <span *ngIf="(isAccepted())"
+              class="glyphicon glyphicon-ok-sign accepted"
+              data-toggle="tooltip" title="Elfogadva"></span>
+        <span *ngIf="isRejected()"
+              class="glyphicon glyphicon-minus-sign rejected"
+              data-toggle="tooltip" title="Elutasítva"></span>
+        <span *ngIf="(isAcceptable())"
+              class="glyphicon glyphicon-plus-sign acceptable"
+              data-toggle="tooltip" title="Megerősítésre vár"></span>
+      </div>
+
+    </a>
+

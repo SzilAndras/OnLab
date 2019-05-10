@@ -1,0 +1,44 @@
+<form class="form-horizontal">
+  <div class="row">
+    <div class="col-sm-4 form-group">
+      <label for="status" class="col-sm-3 control-label">Állapot</label>
+      <div class="col-sm-9">
+        <select
+          class="form-control"
+          id="status"
+          name="status"
+          (change)="onSelect($event.target.value)"
+          [(ngModel)]="filter.status">
+          <option *ngFor="let x of statusDropdown" [value]="x.state">{{x.text}}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="col-sm-4 form-group">
+      <label for="plateNumber" class="col-sm-3 control-label">Rendszám</label>
+      <div class="col-sm-9">
+        <input
+          class="form-control"
+          type="text"
+          id="plateNumber"
+          name="plateNumber"
+          (change)="change()"
+          [(ngModel)]="filter.plateNumber">
+      </div>
+
+    </div>
+    <div class="col-sm-4 form-group">
+      <label for="type" class="col-sm-3 control-label">Típus</label>
+      <div class="col-sm-9">
+        <input
+          class="form-control"
+          type="text"
+          id="type"
+          name="type"
+          (change)="change()"
+          [(ngModel)]="filter.type">
+      </div>
+    </div>
+  </div>
+</form>

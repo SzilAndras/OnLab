@@ -1,30 +1,24 @@
 <h3>Foglalások</h3>
 <div>
-  <div class="list-group">
-    <a
-      *ngFor="let res of reservations; let i = index"
-      [ngClass]="{
-      'accepted' : (isAcceptedByAdmin(res) && isAcceptedByUser(res)),
-      'pending': (!isAcceptedByAdmin(res) && !isRejected(res)),
-      'rejected': isRejected(res),
-      'acceptable': (isAcceptedByAdmin(res) && !isAcceptedByUser(res) && !isRejected(res))
-      }"
-      class="list-group-item"
-      (click)="onSelect(res.id)">
-      <p>
-        Típus: {{res.vehicleType}}
-      </p>
-      <p>
-        Rendszám: {{res.plateNumber}}
-      </p>
-      <p>
-        Alvázszám: {{res.vin}}
-      </p>
-      <p>
-        Foglalás állapota: {{res.adminStatus}}
-      </p>
-    </a>
+  <div class="list-group pre-scrollable">
+    <ng-container *ngFor="let res of reservations; let i = index">
+      <app-reservation-item
+        *ngIf="(filter.status === 'All' || filter.status === reservationStatus(res)) &&
+        res.plateNumber.toUpperCase().includes(filter.plateNumber.toUpperCase()) &&
+        res.vehicleType.toUpperCase().includes(filter.type.toUpperCase())"
+        [isSelected]="selectedId === res.id"
+        [reservation]="res"
+        (selected)="onSelect($event)">
+      </app-reservation-item>
+    </ng-container>
   </div>
 </div>
 
 
+<!--[ngClass]="{
+      'accepted' : (isAcceptedByAdmin(res) && isAcceptedByUser(res)),
+      'pending': (!isAcceptedByAdmin(res) && !isRejected(res)),
+      'rejected': isRejected(res),
+      'acceptable': (isAcceptedByAdmin(res) && !isAcceptedByUser(res) && !isRejected(res)),
+      'active': res.id === selectedId
+      }"-->

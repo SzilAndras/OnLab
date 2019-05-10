@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {NewReservationService} from '../../services/new-reservation.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-reservation-header',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReservationHeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private newReservationService: NewReservationService) { }
 
   ngOnInit() {
+  }
+
+  isSettings(){
+    return this.newReservationService.isVehicleSettingsValid();
+  }
+
+  isAppointsment() {
+    return this.newReservationService.isAppointmentValid();
   }
 
 }

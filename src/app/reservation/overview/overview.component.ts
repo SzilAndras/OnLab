@@ -41,4 +41,12 @@ export class OverviewComponent implements OnInit {
     });
   }
 
+  isValid(){
+    return this.resService.isAppointmentValid() && this.resService.isVehicleSettingsValid();
+  }
+
+  onBack(){
+    this.router.navigate(['reservation/appointment']);
+  }
+
 }

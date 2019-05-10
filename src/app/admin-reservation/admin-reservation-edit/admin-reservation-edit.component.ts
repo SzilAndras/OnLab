@@ -8,6 +8,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DatepickerOptions} from 'ng2-datepicker';
 import {Status} from '../../model/enums/status.enum';
 import {DatePipe} from '@angular/common';
+import {AppointmentType} from '../../model/enums/appointment-type.enum';
+import {AppointmentState} from '../../model/enums/appointment-state.enum';
 
 @Component({
   selector: 'app-admin-reservation-edit',
@@ -56,7 +58,15 @@ export class AdminReservationEditComponent implements OnInit {
         for (const app of this.reservation.appointments) {
           if (app.type === 'Takeover') {
             this.takeoverDate = new Date(app.day);
+            if(app.state === AppointmentState.Accepted){
+              this.takeover = app;
+            }
             console.log('takeover date: ' + this.takeoverDate);
+          } else if (app.type === AppointmentType.Handover ) {
+            this.handoverDate = new Date(app.day);
+          } else if (app.type === AppointmentType.Work) {
+            this.workDate = new Date(app.day);
+            this.duringWork.push(app);
           }
         }
         this.userService.getUser(this.reservation.userId + '').subscribe(
@@ -106,7 +116,26 @@ export class AdminReservationEditComponent implements OnInit {
   }
 
   onSave() {
-    if (this.duringWork.length > 0 && this.handover !== undefined && this.takeover !== undefined) {
+    if (this.duringWork.length > 0 && this.handoverDate !== undefined && this.takeover !== undefined) {
+      if (this.reservation.userStatus === 'Accepted' && this.reservation.adminStatus === 'Pending') {
+        if (this.handover === undefined) {
+          console.log('confirm suggested by user');
+          this.resHttpService.confirmReservation(this.reservation).subscribe(
+            (response) => {
+              console.log(response);
+            }
+          );
+        } else {
+          console.log('suggest new');
+          this.reservation.appointments.push(this.handover);
+          this.resHttpService.suggestReservation(this.reservation).subscribe(
+            (response) => {
+              console.log(response);
+            }
+          );
+        }
+
+      } else {
       for(let w of this.duringWork){
         this.reservation.appointments.push(w);
       }
@@ -123,6 +152,7 @@ export class AdminReservationEditComponent implements OnInit {
           console.log(error);
         }
       );
+      }
     } else {
       console.log('Validation fails.');
     }
@@ -165,7 +195,19 @@ export class AdminReservationEditComponent implements OnInit {
     this.router.navigate(['admin-reservations/list']);
   }
 
-  isAccepted(): boolean{
+  isAcceptedByAdmin(): boolean{
     return this.reservation.adminStatus.toString() === 'Accepted';
+  }
+
+  isAcceptedByUser(): boolean{
+    return this.reservation.userStatus.toString() === 'Accepted';
+  }
+
+  isRejected(): boolean {
+    return (this.reservation.userStatus === Status.Rejected || this.reservation.adminStatus === Status.Rejected);
+  }
+
+  init(){
+
   }
 }

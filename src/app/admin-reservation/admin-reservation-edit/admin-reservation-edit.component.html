@@ -45,10 +45,10 @@
       <tbody>
       <tr class="form-group" *ngFor="let w of reservation.works">
         <td>{{w.work}}</td>
-        <td><input [disabled]="isAccepted()" class="form-control" [(ngModel)]="w.time"></td>
-        <td><input [disabled]="isAccepted()" class="form-control" [(ngModel)]="w.price"></td>
+        <td><input [disabled]="isAcceptedByAdmin()" class="form-control" [(ngModel)]="w.time"></td>
+        <td><input [disabled]="isAcceptedByAdmin()" class="form-control" [(ngModel)]="w.price"></td>
         <td>
-          <select [disabled]="isAccepted()" class="form-control" [(ngModel)]="w.state">
+          <select [disabled]="isAcceptedByAdmin()" class="form-control" [(ngModel)]="w.state">
             <option [value]="'Pending'">Függőben</option>
             <option [value]="'Accepted'">Elfogadva</option>
             <option [value]="'Rejected'">Elutasítva</option>
@@ -79,9 +79,12 @@
 
   <hr>
 
-  <div *ngIf="reservation.adminStatus !== 'Accepted' && reservation.adminStatus !== 'Rejected'">
+  <div *ngIf="
+  (reservation.adminStatus === 'Pending' && reservation.userStatus === 'Pending' && !isRejected()) ||
+  (reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected())
+   ">
 
-    <div>
+    <div *ngIf="!(reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected())">
       <p>Átvétel: </p>
       <div *ngIf="takeover !== undefined; else none">
         {{takeover.day | date: 'yyyy/MM/dd'}}
@@ -129,7 +132,7 @@
 
     <hr>
 
-    <div>
+    <div *ngIf="!(reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected())">
       <p>Munka: </p>
       <div *ngIf="duringWork[0] !== undefined; else none">
         <div *ngFor="let aw of duringWork">
@@ -157,7 +160,9 @@
     </div>
   </div>
 
-  <div *ngIf="reservation.adminStatus === 'Accepted'">
+  <div *ngIf="
+  reservation.adminStatus === 'Accepted' ||
+  (reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected())">
     <table class="table table-striped">
       <thead>
       <tr>

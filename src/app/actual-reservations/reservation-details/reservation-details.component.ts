@@ -34,12 +34,12 @@ export class ReservationDetailsComponent implements OnInit {
   };
 
   constructor(
-    private readonly selectedService: ActualReservationsService,
+    private readonly actualReservationService: ActualReservationsService,
     private readonly reservationHttpService: ReservationHttpService
   ) { }
 
   ngOnInit() {
-    this.selectedService.elementSelected.subscribe(
+    this.actualReservationService.elementSelected.subscribe(
       (resId: number) => {
         this.reservationHttpService.getReservationById(resId).subscribe((reservation) => {
           console.log(reservation);
@@ -75,16 +75,16 @@ export class ReservationDetailsComponent implements OnInit {
       this.reservation.userStatus = Status.Accepted;
       this.reservationHttpService.confirmReservation(this.reservation).subscribe(
         (response) => {
-          console.log(response);
           this.reservation = response;
+          this.actualReservationService.elementModified.emit(this.reservation.id);
         }
       );
     } else {
       this.reservation.appointments.push(this.handover);
       this.reservationHttpService.suggestReservation(this.reservation).subscribe(
         (response) => {
-          console.log(response);
           this.reservation = response;
+          this.actualReservationService.elementModified.emit(this.reservation.id);
         }
       );
     }
@@ -94,7 +94,7 @@ export class ReservationDetailsComponent implements OnInit {
     this.reservationHttpService.rejectReservation(this.reservation).subscribe(
       (response) => {
         this.reservation = response;
-        console.log(this.reservation);
+        this.actualReservationService.elementModified.emit(this.reservation.id);
       }
     );
   }

@@ -25,12 +25,10 @@ import {DatePipe} from '@angular/common';
 import { ActualReservationsComponent } from './actual-reservations/actual-reservations.component';
 import { ReservationListComponent } from './actual-reservations/reservation-list/reservation-list.component';
 import { ReservationDetailsComponent } from './actual-reservations/reservation-details/reservation-details.component';
-import {NewReservationService} from './services/new-reservation.service';
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import {AuthInterceptor} from './services/http/auth-interceptor';
 import { AdminReservationComponent } from './admin-reservation/admin-reservation.component';
-import { AdminReservationHeaderComponent } from './admin-reservation/admin-reservation-header/admin-reservation-header.component';
 import { AdminReservationActualComponent } from './admin-reservation/admin-reservation-actual/admin-reservation-actual.component';
 import {MustMatchDirective} from './auth/signup/must-match.directive';
 import { AdminReservationEditComponent } from './admin-reservation/admin-reservation-edit/admin-reservation-edit.component';
@@ -39,6 +37,7 @@ import { TimeTableComponent } from './shared/time-table/time-table.component';
 import { CreateRatingComponent } from './rating/create-rating/create-rating.component';
 import {RatingListComponent} from './rating/rating-list/rating-list.component';
 import {RatingItemComponent} from './rating/rating-item/rating-item.component';
+import { ReservationItemComponent } from './shared/reservation/reservation-item/reservation-item.component';
 
 const appRouts: Routes = [
   {path: 'home', component: HomeComponent,
@@ -87,7 +86,6 @@ const appRouts: Routes = [
     SigninComponent,
     SignupComponent,
     AdminReservationComponent,
-    AdminReservationHeaderComponent,
     AdminReservationActualComponent,
     MustMatchDirective,
     AdminReservationEditComponent,
@@ -96,6 +94,7 @@ const appRouts: Routes = [
     CreateRatingComponent,
     RatingListComponent,
     RatingItemComponent,
+    ReservationItemComponent,
   ],
   imports: [
     BrowserModule,

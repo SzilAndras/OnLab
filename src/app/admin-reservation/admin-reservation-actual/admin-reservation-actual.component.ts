@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ReservationInterface} from '../../model/interfaces/reservation.interface';
 import {ReservationHttpService} from '../../services/http/reservation-http.service';
 import {Router} from '@angular/router';
+import {FilterInterface} from '../../model/interfaces/filter.interface';
+import {FilterStatus} from '../../model/enums/filter-status.enum';
+import {Status} from '../../model/enums/status.enum';
 
 @Component({
   selector: 'app-admin-reservation-actual',
@@ -9,54 +12,54 @@ import {Router} from '@angular/router';
   styleUrls: ['./admin-reservation-actual.component.css']
 })
 export class AdminReservationActualComponent implements OnInit {
+  filter: FilterInterface;
+  @Output() filterSet: EventEmitter<FilterInterface> = new EventEmitter();
+  reservations: ReservationInterface[] = [];
 
-  statusDropdown = [
-    {state: 'All', text: 'Összes'},
-    {state: 'Pending', text: 'Függőben'},
-    {state: 'Accepted', text: 'Elfogadva'},
-  ];
-
-  selectedStatus: string;
-
-  reservations: ReservationInterface[];
-  selectedReservation: ReservationInterface;
-  plateNumberFiler = '';
-  typeFilter = '';
 
   constructor(
     private reservationHttpService: ReservationHttpService,
     private router: Router) { }
 
   ngOnInit() {
-    this.reservations = [];
-    this.selectedStatus = this.statusDropdown[0].state;
-    this.refreshReservations();
-  }
-
-  onSelect(){
+    if (this.filter === undefined){
+      this.filter = {status: FilterStatus.All, type: '', plateNumber: ''};
+    }
     this.refreshReservations();
   }
 
   refreshReservations() {
-    console.log('admin-reservations');
-    if(this.selectedStatus === 'Pending' || this.selectedStatus === 'Accepted'){
-      this.reservationHttpService.getReservationsByState(this.selectedStatus).subscribe(
-        (response) => {
-          this.reservations = response;
-          console.log(response);
-        });
-    } else {
       this.reservationHttpService.getAllReservation().subscribe(
         (response) => {
           this.reservations = response;
           console.log(response);
         });
+  }
+
+  onSelect(reId: number){
+    this.router.navigate(['/admin-reservations/isEdited/' + reId ]);
+  }
+
+  setFilter(filter: FilterInterface){
+    this.filter = filter;
+    this.filterSet.emit(filter);
+  }
+
+  reservationStatus(reservation: ReservationInterface) {
+    if(reservation.adminStatus === Status.Accepted && reservation.userStatus === Status.Accepted){
+      return FilterStatus.Accepted;
+    } else if (reservation.adminStatus === Status.Rejected || reservation.userStatus === Status.Rejected){
+      return FilterStatus.Rejected;
+    } else if ((!(reservation.adminStatus === Status.Accepted) ||
+      (reservation.adminStatus === Status.Accepted && !(reservation.userStatus === Status.Accepted)))){
+      return FilterStatus.Pending;
+    } else {
+      return FilterStatus.All;
     }
   }
 
-  onResSelect(reId: number){
-    this.router.navigate(['/admin-reservations/isEdited/' + reId ]);
-
+  init(filter: FilterInterface){
+    this.filter = filter;
   }
 
 

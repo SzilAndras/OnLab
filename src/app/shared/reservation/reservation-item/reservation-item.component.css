@@ -1,0 +1,29 @@
+.accepted {
+  color: green;
+  font-size: 50px
+}
+.pending {
+  color: yellow;
+  font-size: 50px
+}
+
+.acceptable {
+  color: blue;
+  font-size: 50px
+}
+
+.rejected {
+  color: red;
+  font-size: 50px
+}
+
+.res-element {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+a.list-group-item{
+  margin-bottom: 5px;
+}

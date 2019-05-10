@@ -6,6 +6,7 @@ import {EventEmitter, Injectable} from '@angular/core';
 export class ActualReservationsService {
 
   elementSelected = new EventEmitter<number>();
+  elementModified = new EventEmitter<number>();
 
   constructor() { }
 }

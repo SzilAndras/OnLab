@@ -3,6 +3,12 @@
   <hr>
 </div>
 
-<div *ngIf="ratings !== undefined">
-    <app-rating-item *ngFor="let rating of ratings" [rating]="rating"></app-rating-item>
+<ul class="pager">
+  <li class="previous"><a (click)="previousPage()">Előző</a></li>
+  <li class="next"><a (click)="nextPage()">Következő</a></li>
+</ul>
+
+<div *ngIf="pageRatings !== undefined">
+    <app-rating-item *ngFor="let rating of pageRatings" [rating]="rating"></app-rating-item>
 </div>
+

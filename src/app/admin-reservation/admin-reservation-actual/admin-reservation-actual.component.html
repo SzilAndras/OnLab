@@ -1,49 +1,19 @@
-  <div class="row">
-    <div class="col-sm-4">
-      <label>Állapot</label>
-      <div>
-        <select (change)="onSelect($event.target.value)" [(ngModel)]="selectedStatus">
-          <option *ngFor="let x of statusDropdown" [value]="x.state">{{x.text}}</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="col-sm-4">
-      <label>Rendszám</label>
-      <div>
-        <input [(ngModel)]="plateNumberFiler">
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <label>Típus</label>
-      <div>
-        <input [(ngModel)]="typeFilter">
-      </div>
-    </div>
-  </div>
-  <br>
-
-  <!--Táblázatban megjelenítés-->
-  <div *ngIf="reservations !== []">
+<div>
+  <app-reservation-filter [initFilter]="filter" (filtered)="setFilter($event)"></app-reservation-filter>
+</div>
+<div>
+  <div>
     <div class="list-group">
-      <ng-container *ngFor="let res of reservations; let i = index" >
-        <a
-          *ngIf="res.plateNumber.includes(plateNumberFiler) && res.vehicleType.includes(typeFilter)"
-          class="list-group-item"
-          (click)="onResSelect(res.id)">
-          <p>
-            Típus: {{res.vehicleType}}
-          </p>
-          <p>
-            Rendszám: {{res.plateNumber}}
-          </p>
-          <p>
-            Alvázszám: {{res.vin}}
-          </p>
-          <p>
-            Foglalás állapota: {{res.adminStatus}}
-          </p>
-        </a>
+      <ng-container *ngFor="let res of reservations; let i = index">
+        <app-reservation-item
+          *ngIf="(filter.status === 'All' || filter.status === reservationStatus(res)) &&
+        res.plateNumber.toUpperCase().includes(filter.plateNumber.toUpperCase()) &&
+        res.vehicleType.toUpperCase().includes(filter.type.toUpperCase())"
+          [reservation]="res"
+          (selected)="onSelect($event)">
+        </app-reservation-item>
       </ng-container>
     </div>
   </div>
+</div>
+

@@ -1,8 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ReservationInterface} from '../../model/interfaces/reservation.interface';
 import {ReservationHttpService} from '../../services/http/reservation-http.service';
 import {ActualReservationsService} from '../../services/actual-reservations.service';
 import {Status} from '../../model/enums/status.enum';
+import {FilterInterface} from '../../model/interfaces/filter.interface';
+import {FilterStatus} from '../../model/enums/filter-status.enum';
 
 @Component({
   selector: 'app-reservation-list',
@@ -10,37 +12,54 @@ import {Status} from '../../model/enums/status.enum';
   styleUrls: ['./reservation-list.component.css']
 })
 export class ReservationListComponent implements OnInit {
+  @Input() filter: FilterInterface;
   reservations: ReservationInterface[] = [];
+  selectedId: number;
+
 
   constructor(
     private readonly resHttpService: ReservationHttpService,
-    private readonly selectService: ActualReservationsService
+    private readonly actualReservationService: ActualReservationsService
   ) { }
 
   ngOnInit() {
+    this.selectedId = -1;
+    this.refreshReservations();
+    this.actualReservationService.elementModified.subscribe(
+      (reservationId: number) => {
+        this.refreshReservations();
+        this.selectedId = reservationId;
+      }
+    );
+
+  }
+
+  onSelect(id: number){
+    this.actualReservationService.elementSelected.emit(id);
+    this.selectedId = id;
+  }
+
+  refreshReservations() {
     this.resHttpService.getUserReservations().subscribe(
       (response) => {
         this.reservations = response;
       },
-    (error) => {
+      (error) => {
         console.log(error);
-    });
+      });
   }
 
-  onSelect(id: number){
-    this.selectService.elementSelected.emit(id);
-  }
-
-  isAcceptedByAdmin(reservation: ReservationInterface){
-    return reservation.adminStatus === Status.Accepted;
-  }
-
-  isAcceptedByUser(reservation: ReservationInterface) {
-    return reservation.userStatus === Status.Accepted;
-  }
-
-  isRejected(reservation: ReservationInterface) {
-    return (reservation.userStatus === Status.Rejected || reservation.adminStatus === Status.Rejected );
+  reservationStatus(reservation: ReservationInterface) {
+    if(reservation.adminStatus === Status.Accepted && reservation.userStatus === Status.Accepted){
+      return FilterStatus.Accepted;
+    } else if (reservation.adminStatus === Status.Rejected || reservation.userStatus === Status.Rejected){
+      return FilterStatus.Rejected;
+    } else if ((!(reservation.adminStatus === Status.Accepted) ||
+      (reservation.adminStatus === Status.Accepted && !(reservation.userStatus === Status.Accepted)))){
+      return FilterStatus.Pending;
+    } else {
+      return FilterStatus.All;
+    }
   }
 
 }

@@ -52,7 +52,6 @@ export class AppointmentComponent implements OnInit{
     this.resService.timeTable = this.timeTable;
     for (let i = 0; i < this.timeTable.length; i++) {
       if (this.timeTable[i].status === CellStatus.Selected) {
-
         this.resService.reservation.appointments.push(
           {
             id: undefined,
@@ -63,7 +62,7 @@ export class AppointmentComponent implements OnInit{
           }); /*this.datepipe.transform(this.date, 'yyyy-MM-dd')*/
       }
     }
-    this.resService.reservation.comments.push({comment: this.comment, commentNumber: 0});
+    this.resService.reservation.comments = [{comment: this.comment, commentNumber: 0}];
     this.router.navigate(['reservation/overview']);
   }
 
@@ -78,12 +77,16 @@ export class AppointmentComponent implements OnInit{
   }
 
   dateOnChange(): void {
-    console.log('onChange');
-    console.log(this.date);
     this.resService.refreshTimeTable(this.date);
     this.timeTable = this.resService.timeTable;
-    console.log(this.date);
+  }
 
+  isValid(){
+    this.resService.isAppointmentValid();
+  }
+
+  onBack(){
+    this.router.navigate(['reservation/vehicle']);
   }
 
 }

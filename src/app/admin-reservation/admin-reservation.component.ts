@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {ReservationInterface} from '../model/interfaces/reservation.interface';
-import {ReservationHttpService} from '../services/http/reservation-http.service';
+import {Component, EventEmitter, OnInit} from '@angular/core';
+import {FilterInterface} from '../model/interfaces/filter.interface';
 
 @Component({
   selector: 'app-admin-reservation',
@@ -8,15 +7,20 @@ import {ReservationHttpService} from '../services/http/reservation-http.service'
   styleUrls: ['./admin-reservation.component.css']
 })
 export class AdminReservationComponent implements OnInit {
+  filter: FilterInterface;
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  adminResCompFiltered(filter){
-    console.log('FILTER:  ');
-    console.log(filter);
+  onActivate(componentReference) {
+    componentReference.init(this.filter);
+    componentReference.filterSet = new EventEmitter<FilterInterface>();
+    componentReference.filterSet.subscribe(
+      (filter) => {
+        this.filter = filter;
+      }
+    );
   }
 
 }

@@ -1,9 +1,12 @@
-  <div class="row">
+<div>
+  <app-reservation-filter [initFilter]="{status: 'All', plateNumber: '', type: ''}" (filtered)="setFilter($event)"></app-reservation-filter>
+</div>
+<div class="row well">
     <div class="col-md-5">
-      <app-reservation-list></app-reservation-list>
+      <app-reservation-list [filter]="filter"></app-reservation-list>
     </div>
     <div class="col-md-7">
       <app-reservation-details></app-reservation-details>
     </div>
-  </div>
+</div>
 
