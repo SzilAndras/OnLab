@@ -1,0 +1,219 @@
+<div *ngIf="reservation !== undefined && user !== undefined">
+
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Jármű</h4>
+      <ul class="list-group">
+        <li class="list-group-item">
+          {{reservation.plateNumber}}
+        </li>
+        <li class="list-group-item">
+          {{reservation.vehicleType}}
+        </li>
+        <li class="list-group-item">
+          {{reservation.vin}}
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h4>Foglaló</h4>
+      <ul class="list-group">
+        <li class="list-group-item">
+          {{user.fullName}}
+        </li>
+        <li class="list-group-item">
+          {{user.email}}
+        </li>
+        <li class="list-group-item">
+          {{user.phoneNumber}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr>
+
+  <div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Munka</th>
+        <th>Idő(perc)</th>
+        <th>Ár(Ft)</th>
+        <th>Állapot</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="form-group" *ngFor="let w of reservation.works">
+        <td>{{w.work}}</td>
+        <td><input [disabled]="isAcceptedByAdmin()" class="form-control" [(ngModel)]="w.time"></td>
+        <td><input [disabled]="isAcceptedByAdmin()" class="form-control" [(ngModel)]="w.price"></td>
+        <td>
+          <select [disabled]="isAcceptedByAdmin()" class="form-control" [(ngModel)]="w.state">
+            <option [value]="'Pending'">Függőben</option>
+            <option [value]="'Accepted'">Elfogadva</option>
+            <option [value]="'Rejected'">Elutasítva</option>
+          </select>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <!--<button class="btn btn-success">Új munka</button>-->
+  </div>
+
+  <div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Összes idő(perc)</th>
+        <th>Összes ár(Ft)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{{valuesSum().timeSum}}</td>
+        <td>{{valuesSum().priceSum}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div *ngIf="
+  (reservation.adminStatus === 'Pending' && reservation.userStatus === 'Pending' && !isRejected()) ||
+  (reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected())
+   ">
+
+    <div *ngIf="!(reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected())">
+      <p>Átvétel: </p>
+      <div *ngIf="takeover !== undefined; else none">
+        {{takeover.day | date: 'yyyy/MM/dd'}}
+        {{takeover.time}}
+      </div>
+      <button *ngIf="isEdited.takeover === false" class="btn btn-primary" (click)="isEdited.takeover = true">Szerkesztés</button>
+      <div *ngIf="isEdited.takeover">
+        <p>Dátum: {{takeoverDate | date: 'yyyy/MM/dd'}}</p>
+        <app-time-table
+          [date]="takeoverDate"
+          [resId]="resId" [mode]="'single'"
+          [abelToSelect]="['Selected']"
+          [selectFor]="'Accepted'"
+          [typeFor]="'Takeover'"
+          [selectedWorks]="duringWork"
+          [selectedHandover]="handover"
+          [selectedTakeover]="takeover"
+          (selected)="onTakeoverSelected($event)">
+        </app-time-table>
+        <button class="btn btn-primary" (click)="isEdited.takeover = false">Elrejtés</button>
+      </div>
+    </div>
+
+
+    <hr>
+
+    <div *ngIf="takeover !== undefined">
+      <p>Átadás: </p>
+      <div *ngIf="handover !== undefined; else none ">
+        {{handover.day | date: 'yyyy/MM/dd'}}
+        {{handover.time}}
+      </div>
+
+      <button *ngIf="isEdited.handover === false" class="btn btn-primary" (click)="isEdited.handover = true">Szerkesztés</button>
+      <div *ngIf="isEdited.handover">
+        <div class="datepicker-container" >
+          <ng-datepicker [(ngModel)]="handoverDate" [options]="options" (ngModelChange)="onChangeHandoverDate()"></ng-datepicker>
+        </div>
+        <app-time-table
+          [date]="handoverDate"
+          [resId]="resId" [mode]="'single'"
+          [abelToSelect]="['Selected', 'Empty']"
+          [selectFor]="'Suggested'"
+          [typeFor]="'Handover'"
+          [selectedWorks]="duringWork"
+          [selectedHandover]="handover"
+          [selectedTakeover]="takeover"
+          (selected)="onHandoverSelected($event)"></app-time-table>
+        <button class="btn btn-primary" (click)="isEdited.handover = false">Elrejtés</button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div *ngIf="!(reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected()) && takeover !== undefined">
+      <p>Munka: </p>
+      <div *ngIf="duringWork[0] !== undefined; else none">
+        <div *ngFor="let aw of duringWork">
+          day: {{aw.day | date: 'yyyy/MM/dd'}};
+          time: {{aw.time}}
+        </div>
+      </div>
+
+
+      <button *ngIf="isEdited.works === false" class="btn btn-primary" (click)="isEdited.works = true">Szerkesztés</button>
+      <div *ngIf="isEdited.works">
+        <div class="datepicker-container" >
+          <ng-datepicker [(ngModel)]="workDate" [options]="options" (ngModelChange)="onChangeWorkDate()"></ng-datepicker>
+        </div>
+        <app-time-table
+          [date]="workDate"
+          [resId]="resId" [mode]="'single'"
+          [abelToSelect]="['Selected', 'Empty', 'Chosen']"
+          [selectFor]="'Accepted'"
+          [typeFor]="'Work'"
+          [selectedWorks]="duringWork"
+          [selectedHandover]="handover"
+          [selectedTakeover]="takeover"
+          (selected)="onDuringWorkSelected($event)">
+        </app-time-table>
+        <button class="btn btn-primary" (click)="isEdited.works = false">Elrejtés</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="
+  reservation.adminStatus === 'Accepted' ||
+  (reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected())">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Dátum</th>
+        <th>Időpont</th>
+        <th>Esemény</th>
+        <th>Állapot</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="form-group" *ngFor="let app of reservation.appointments">
+        <td>{{app.day | date: 'yyyy/MM/dd'}}</td>
+        <td>{{app.time}} óra</td>
+        <td *ngIf="app.type === 'Takeover'">Átvétel</td>
+        <td *ngIf="app.type === 'Handover'">Átadás</td>
+        <td *ngIf="app.type === 'Work'">Munka</td>
+
+        <td *ngIf="app.state === 'Accepted'; else pending">Elfogadva</td>
+        <ng-template #pending>
+          <td>Függőben</td>
+        </ng-template>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+
+  <div class="btn-group pull-right">
+    <button class="btn btn-default" (click)="onBack()">Vissza</button>
+    <button [disabled]="reservation.adminStatus === 'Accepted'" class="btn btn-danger" (click)="onReject()">Elutasítás</button>
+    <button [disabled]="reservation.adminStatus === 'Accepted'" class="btn btn-primary" (click)="onSave()">Elfogadás</button>
+  </div>
+
+
+</div>
+
+
+<ng-template #none>
+  <div>
+    Nincs kiválasztva!
+  </div>
+</ng-template>

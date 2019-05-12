@@ -1,0 +1,164 @@
+<div *ngIf="reservation !== undefined" >
+  <div>
+    <div class="row">
+      <div class="col-md-5">
+      <h4>Jármű adatai</h4>
+      <div class="form-group">
+          <label for="type">Típus(gyártmány, modell)</label>
+          <input
+            type="text"
+            class="form-control"
+            id="type"
+            required
+            [(ngModel)]="reservation.vehicleType"
+            minlength="6"
+            name="type">
+      </div>
+
+      <div class="form-group">
+        <label for="pN">Rendszám</label>
+        <input
+          [(ngModel)]="reservation.plateNumber"
+          type="text"
+          class="form-control"
+          id="pN"
+          required
+          minlength="6"
+          name="pN">
+      </div>
+
+
+      <div class="form-group">
+        <label for="vin">Alvázszám</label>
+        <input
+          [(ngModel)]="reservation.vin"
+          type="text"
+          class="form-control"
+          id="vin"
+          required
+          minlength="17"
+          maxlength="17"
+          name="vin">
+      </div>
+
+      </div>
+    <div class="col-md-7">
+      <h4>Feladatok</h4>
+      <div class="form-group">
+        <div class="input-group">
+          <input
+            [(ngModel)]="newWork"
+            type="text"
+            class="form-control"
+            placeholder="Új feladat...">
+          <span class="input-group-btn">
+          <button  class="btn btn-success" type="button" (click) = "onNewWork()">Hozzáad</button>
+        </span>
+        </div>
+      </div>
+
+      <hr>
+        <div class="input-group" *ngFor="let work of reservation.works; let i = index">
+          <input [(ngModel)]= "work.work" type="text" class="form-control">
+          <span class="input-group-btn">
+           <button  class="btn btn-danger" type="button" (click) = "onRemoveWork(i)">Töröl</button>
+          </span>
+        </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="text-right">
+    <button
+      class="btn btn-primary btn-lg"
+      (click)="onNext()">
+      Tovább</button>
+  </div>
+  </div>
+</div>
+
+
+<!--<form  #vf="ngForm">
+    <div class="row">
+      <div class="col-md-5">
+      <h4>Jármű adatai</h4>
+      <div class="form-group">
+          <label for="type">Típus(gyártmány, modell)</label>
+          <input
+            type="text"
+            class="form-control"
+            id="type"
+            required
+            [(ngModel)]="new-reservation.vehicleType"
+            minlength="6"
+            #type="ngModel"
+            name="type">
+      </div>
+      <span class="help-block" *ngIf="!type.valid && type.touched">A típusnak legalább 6 karakternek hosszúnak kell lennie.</span>
+
+      <div class="form-group">
+        <label for="pN">Rendszám</label>
+        <input
+          [(ngModel)]="new-reservation.plateNumber"
+          type="text"
+          class="form-control"
+          id="pN"
+          required
+          minlength="6"
+          name="pN"
+          #pN="ngModel">
+      </div>
+      <span class="help-block" *ngIf="!pN.valid && pN.touched">A rendszámnak legalább 6 karakternek hosszúnak kell lennie.</span>
+
+
+      <div class="form-group">
+        <label for="vin">Alvázszám</label>
+        <input
+          [(ngModel)]="new-reservation.vin"
+          type="text"
+          class="form-control"
+          id="vin"
+          required
+          minlength="17"
+          maxlength="17"
+          name="vin"
+          #vin="ngModel">
+      </div>
+      <span class="help-block" *ngIf="!vin.valid && vin.touched">Az alvázszámnak 17 karakternek hosszúnak kell lennie.</span>
+
+      </div>
+    <div class="col-md-7">
+      <h4>Feladatok</h4>
+      <div class="form-group">
+        <div class="input-group">
+          <input
+            [(ngModel)]="newWork"
+            type="text"
+            class="form-control"
+            placeholder="Új feladat...">
+          <span class="input-group-btn">
+          <button  class="btn btn-success" type="button" (click) = "onNewWork()">Hozzáad</button>
+        </span>
+        </div>
+      </div>
+
+      <hr>
+        <div class="input-group" *ngFor="let work of new-reservation.works; let i = index">
+          <input [(ngModel)]= "work.work" type="text" class="form-control">
+          <span class="input-group-btn">
+           <button  class="btn btn-danger" type="button" (click) = "onRemoveWork(i)">Töröl</button>
+          </span>
+        </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="text-right">
+    <button
+      class="btn btn-primary btn-lg"
+      (click)="onNext()"
+      [disabled]="(!vf.valid || new-reservation.works.length == 0)">
+      Tovább</button>
+  </div>
+  </form>-->
+

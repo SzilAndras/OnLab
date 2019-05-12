@@ -1,0 +1,19 @@
+<div *ngIf="timeTable !== undefined && reservationAppointments !== undefined" class="table-responsive">
+  <table class="table">
+    <tr class="table table-bordered tab">
+      <th *ngFor="let c of timeTable; let i = index" > {{c.time}}</th>
+    </tr>
+    <tr class="table">
+      <td *ngFor="let cell of timeTable; let j = index"
+          (click)="onCellSelected(j)">
+        <p *ngIf="isSelectable(j) && cell.status !== 'Chosen'" class="empty">{{getCellText(j)}}</p>
+        <p *ngIf="isSelectable(j) && cell.status === 'Chosen'" class="chosen">{{getCellText(j)}}</p>
+        <p *ngIf="!isSelectable(j) && cell.status === 'Chosen'" class="chosen-not-allowed">{{getCellText(j)}}</p>
+        <p *ngIf="!isSelectable(j) && cell.status !== 'Chosen'" class="reserved">{{getCellText(j)}}</p>
+      </td>
+    </tr>
+  </table>
+
+</div>
+<p *ngFor="let app of selectedAppointments"> {{app.type}} {{app.state}}</p>
+<!--ngClass="{{cell.status === 'Selected' ? 'info ' : (cell.status === 'Reserved' ? 'danger' : 'success')}}"-->

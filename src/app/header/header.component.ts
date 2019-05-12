@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../services/user.service';
+import {UserService} from '../shared/services/user.service';
 import {Router} from '@angular/router';
-import {NewReservationService} from '../services/new-reservation.service';
+import {NewReservationService} from '../shared/services/new-reservation.service';
 
 @Component({
   selector: 'app-header',

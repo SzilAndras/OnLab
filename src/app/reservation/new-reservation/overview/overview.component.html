@@ -1,0 +1,67 @@
+  <div class="row">
+    <div class="col-md-5">
+      <h4>Jármű adatai</h4>
+      <br>
+      <div class="input-group">
+        <p>{{resService.reservation.vehicleType}}</p>
+      </div>
+      <br>
+      <div class="input-group">
+        <p>{{resService.reservation.plateNumber}}</p>
+      </div>
+      <br>
+      <div class="input-group">
+        <p>{{resService.reservation.vin}}</p>
+      </div>
+    </div>
+
+    <div class="col-md-7">
+      <h4>Feladatok</h4>
+      <div>
+        <ul class="list-group">
+          <li *ngFor="let work of resService.reservation.works; let i = index" class="list-group-item">
+            {{i+1}}.  {{work.work}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <br>
+
+  <h4>Időpont</h4>
+  <br>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Dátum</th>
+      <th>Időpont</th>
+      <th>Esemény</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr class="form-group" *ngFor="let app of reservation.appointments">
+        <td>{{app.day | date: 'yyyy/MM/dd'}}</td>
+        <td>{{app.time}} óra</td>
+        <td>Átvétel</td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <div *ngIf="resService.reservation.comments[0] !== undefined">
+    <h4>Megjegyzés:</h4>
+    <p *ngIf="resService.reservation.comments[0].comment !== undefined">
+      {{this.comment}}
+    </p>
+  </div>
+  <hr>
+
+  <div class="text-right">
+    <div class="btn-group">
+      <button class="btn btn-default btn-lg" (click)="onBack()">Vissza</button>
+      <button [disabled]="!isValid()" class="btn btn-primary btn-lg" (click)="onConfirm()">Küldés</button>
+    </div>
+
+  </div>
+

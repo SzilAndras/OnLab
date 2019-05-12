@@ -1,0 +1,24 @@
+.selected {
+  background-color: dodgerblue;
+  cursor: pointer;
+}
+
+.empty{
+  background-color: limegreen;
+  cursor: pointer;
+}
+
+.reserved{
+  background-color: red;
+  cursor: not-allowed;
+}
+
+.chosen{
+  background-color: turquoise;
+  cursor: pointer;
+}
+
+.chosen-not-allowed{
+  background-color: turquoise;
+  cursor: not-allowed;
+}

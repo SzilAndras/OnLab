@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
-import {UserInterface} from '../../model/interfaces/user.interface';
-import {UserService} from '../../services/user.service';
-import {UserHttpService} from '../../services/http/user-http.service';
+import {UserInterface} from '../../shared/model/interfaces/user.interface';
+import {UserService} from '../../shared/services/user.service';
+import {UserHttpService} from '../../shared/services/http/user-http.service';
 import {Router} from '@angular/router';
-import {NewReservationService} from '../../services/new-reservation.service';
+import {NewReservationService} from '../../shared/services/new-reservation.service';
 
 @Component({
   selector: 'app-signup',

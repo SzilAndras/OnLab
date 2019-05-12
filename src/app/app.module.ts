@@ -6,13 +6,12 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { InformationsComponent } from './home/informations/informations.component';
 import { NewsComponent } from './home/news/news.component';
-import { ReservationComponent } from './reservation/reservation.component';
-import { VehicleSettingComponent } from './reservation/vehicle-setting/vehicle-setting.component';
-import { AppointmentComponent } from './reservation/appointment/appointment.component';
-import { OverviewComponent } from './reservation/overview/overview.component';
-import { ReservationHeaderComponent } from './reservation/reservation-header/reservation-header.component';
+import { ReservationComponent } from './reservation/new-reservation/reservation.component';
+import { VehicleSettingComponent } from './reservation/new-reservation/vehicle-setting/vehicle-setting.component';
+import { AppointmentComponent } from './reservation/new-reservation/appointment/appointment.component';
+import { OverviewComponent } from './reservation/new-reservation/overview/overview.component';
+import { ReservationHeaderComponent } from './reservation/new-reservation/reservation-header/reservation-header.component';
 import {RouterModule, Routes} from '@angular/router';
-import { ProfileComponent } from './profile/profile.component';
 import { NewsItemComponent } from './home/news/news-item/news-item.component';
 import { ContactComponent } from './home/informations/contact/contact.component';
 import { AddressComponent } from './home/informations/address/address.component';
@@ -22,22 +21,22 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgDatepickerModule} from 'ng2-datepicker';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {DatePipe} from '@angular/common';
-import { ActualReservationsComponent } from './actual-reservations/actual-reservations.component';
-import { ReservationListComponent } from './actual-reservations/reservation-list/reservation-list.component';
-import { ReservationDetailsComponent } from './actual-reservations/reservation-details/reservation-details.component';
+import { ActualReservationsComponent } from './reservation/user-reservations/actual-reservations.component';
+import { ReservationListComponent } from './reservation/user-reservations/reservation-list/reservation-list.component';
+import { ReservationDetailsComponent } from './reservation/user-reservations/reservation-details/reservation-details.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import {AuthInterceptor} from './services/http/auth-interceptor';
-import { AdminReservationComponent } from './admin-reservation/admin-reservation.component';
-import { AdminReservationActualComponent } from './admin-reservation/admin-reservation-actual/admin-reservation-actual.component';
+import {AuthInterceptor} from './shared/services/http/auth-interceptor';
+import { AdminReservationComponent } from './reservation/admin-reservation/admin-reservation.component';
+import { AdminReservationActualComponent } from './reservation/admin-reservation/admin-reservation-actual/admin-reservation-actual.component';
 import {MustMatchDirective} from './auth/signup/must-match.directive';
-import { AdminReservationEditComponent } from './admin-reservation/admin-reservation-edit/admin-reservation-edit.component';
-import { ReservationFilterComponent } from './shared/reservation/reservation-filter/reservation-filter.component';
-import { TimeTableComponent } from './shared/time-table/time-table.component';
-import { CreateRatingComponent } from './rating/create-rating/create-rating.component';
-import {RatingListComponent} from './rating/rating-list/rating-list.component';
-import {RatingItemComponent} from './rating/rating-item/rating-item.component';
-import { ReservationItemComponent } from './shared/reservation/reservation-item/reservation-item.component';
+import { AdminReservationEditComponent } from './reservation/admin-reservation/admin-reservation-edit/admin-reservation-edit.component';
+import { ReservationFilterComponent } from './reservation/reservation-filter/reservation-filter.component';
+import { TimeTableComponent } from './reservation/time-table/time-table.component';
+import { CreateRatingComponent } from './home/rating/create-rating/create-rating.component';
+import {RatingListComponent} from './home/rating/rating-list/rating-list.component';
+import {RatingItemComponent} from './home/rating/rating-item/rating-item.component';
+import { ReservationItemComponent } from './reservation/reservation-item/reservation-item.component';
 
 const appRouts: Routes = [
   {path: 'home', component: HomeComponent,
@@ -46,13 +45,12 @@ const appRouts: Routes = [
       {path: 'rating', component: CreateRatingComponent},
       {path: 'news/:id', component: FullNewsComponent}
     ]},
-  {path: 'reservation', component: ReservationComponent,
+  {path: 'new-reservation', component: ReservationComponent,
     children: [
       {path: 'vehicle', component: VehicleSettingComponent},
       {path: 'appointment', component: AppointmentComponent},
       {path: 'overview', component: OverviewComponent}
     ]},
-  {path: 'profile', component: ProfileComponent},
   {path: 'actual-reservations', component: ActualReservationsComponent},
   {path: 'admin-reservations', component: AdminReservationComponent, children: [
       {path: 'isEdited/:id', component: AdminReservationEditComponent},
@@ -74,7 +72,6 @@ const appRouts: Routes = [
     AppointmentComponent,
     OverviewComponent,
     ReservationHeaderComponent,
-    ProfileComponent,
     NewsItemComponent,
     ContactComponent,
     AddressComponent,
