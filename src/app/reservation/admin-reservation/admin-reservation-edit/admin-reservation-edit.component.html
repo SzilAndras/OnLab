@@ -108,10 +108,42 @@
       </div>
     </div>
 
+    <hr>
+
+    <div *ngIf="!(reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected()) && takeover !== undefined">
+      <p>Munka: </p>
+      <div *ngIf="duringWork[0] !== undefined; else none">
+        <div *ngFor="let aw of duringWork">
+          day: {{aw.day | date: 'yyyy/MM/dd'}};
+          time: {{aw.time}}
+        </div>
+      </div>
+
+      <button *ngIf="isEdited.works === false" class="btn btn-primary" (click)="isEdited.works = true">Szerkesztés</button>
+      <div *ngIf="isEdited.works">
+        <div class="datepicker-container" >
+          <ng-datepicker [(ngModel)]="workDate" [options]="options"  (ngModelChange)="onChangeWorkDate()"></ng-datepicker>
+        </div>
+        <app-time-table
+          [date]="workDate"
+          [resId]="resId" [mode]="'single'"
+          [abelToSelect]="['Selected', 'Empty', 'Chosen']"
+          [selectFor]="'Accepted'"
+          [typeFor]="'Work'"
+          [selectedWorks]="duringWork"
+          [selectedHandover]="handover"
+          [selectedTakeover]="takeover"
+          (selected)="onDuringWorkSelected($event)">
+        </app-time-table>
+        <button class="btn btn-primary" (click)="isEdited.works = false">Elrejtés</button>
+      </div>
+    </div>
+  </div>
+
 
     <hr>
 
-    <div *ngIf="takeover !== undefined">
+    <div *ngIf="takeover !== undefined && duringWork.length > 0">
       <p>Átadás: </p>
       <div *ngIf="handover !== undefined; else none ">
         {{handover.day | date: 'yyyy/MM/dd'}}
@@ -138,37 +170,6 @@
     </div>
 
     <hr>
-
-    <div *ngIf="!(reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected()) && takeover !== undefined">
-      <p>Munka: </p>
-      <div *ngIf="duringWork[0] !== undefined; else none">
-        <div *ngFor="let aw of duringWork">
-          day: {{aw.day | date: 'yyyy/MM/dd'}};
-          time: {{aw.time}}
-        </div>
-      </div>
-
-
-      <button *ngIf="isEdited.works === false" class="btn btn-primary" (click)="isEdited.works = true">Szerkesztés</button>
-      <div *ngIf="isEdited.works">
-        <div class="datepicker-container" >
-          <ng-datepicker [(ngModel)]="workDate" [options]="options" (ngModelChange)="onChangeWorkDate()"></ng-datepicker>
-        </div>
-        <app-time-table
-          [date]="workDate"
-          [resId]="resId" [mode]="'single'"
-          [abelToSelect]="['Selected', 'Empty', 'Chosen']"
-          [selectFor]="'Accepted'"
-          [typeFor]="'Work'"
-          [selectedWorks]="duringWork"
-          [selectedHandover]="handover"
-          [selectedTakeover]="takeover"
-          (selected)="onDuringWorkSelected($event)">
-        </app-time-table>
-        <button class="btn btn-primary" (click)="isEdited.works = false">Elrejtés</button>
-      </div>
-    </div>
-  </div>
 
   <div *ngIf="
   reservation.adminStatus === 'Accepted' ||

@@ -62,7 +62,7 @@ export class AdminReservationEditComponent implements OnInit {
         for (const app of this.reservation.appointments) {
           if (app.type === 'Takeover') {
             this.takeoverDate = new Date(app.day);
-            if(app.state === AppointmentState.Accepted){
+            if (app.state === AppointmentState.Accepted) {
               this.takeover = app;
             }
           } else if (app.type === AppointmentType.Handover ) {
@@ -80,7 +80,7 @@ export class AdminReservationEditComponent implements OnInit {
     });
   }
 
-  valuesSum(): {timeSum: number, priceSum: number}{
+  valuesSum(): {timeSum: number, priceSum: number} {
     const values = {timeSum: 0, priceSum: 0};
     for (const work of this.reservation.works) {
       values.timeSum += +work.time;
@@ -89,14 +89,25 @@ export class AdminReservationEditComponent implements OnInit {
     return values;
   }
 
-  onHandoverSelected(appointment: AppointmentInterface[]){
-    this.handover = appointment[0];
-    console.log(this.handoverDate);
-    console.log(this.handover);
+  onHandoverSelected(appointment: AppointmentInterface[]) {
+    if (this.largerAppointment(this.getLastWorkDateAppointment(), appointment[0]).type !== appointment[0].type){
+      this.handoverDate = new Date(this.getLastWorkDateAppointment().day);
+    } else {
+      console.log('else');
+      this.handover = appointment[0];
+    }
   }
 
-  onTakeoverSelected(appointment: AppointmentInterface[]){
+  onTakeoverSelected(appointment: AppointmentInterface[]) {
     this.takeover = appointment[0];
+    if (this.duringWork.length !== 0) {
+      if (this.largerAppointment(this.takeover, this.getFirsWorkDateAppointment()) === this.takeover ){
+        this.workDate = this.takeoverDate;
+        this.duringWork = [];
+      }
+    } else {
+      this.workDate = this.takeoverDate;
+    }
   }
 
   onChangeWorkDate(): void {
@@ -114,6 +125,14 @@ export class AdminReservationEditComponent implements OnInit {
       this.duringWork.splice(this.indexInDuringWork(appointment[0]), 1);
     } else {
       this.duringWork.push(appointment[0]);
+      if(this.largerAppointment(appointment[0], this.takeover).type === appointment[0].type){
+        if (!(this.handoverDate !== undefined) || !(this.handover !== undefined)){
+          this.handoverDate = new Date(this.getLastWorkDateAppointment().day);
+        } else if (this.largerAppointment(this.handover, appointment[0]).type !== this.handover.type){
+          this.handoverDate = new Date(this.getLastWorkDateAppointment().day);
+          this.handover = undefined;
+        }
+      }
     }
   }
 
@@ -135,7 +154,7 @@ export class AdminReservationEditComponent implements OnInit {
         }
 
       } else {
-      for(let w of this.duringWork){
+      for (const w of this.duringWork) {
         this.reservation.appointments.push(w);
       }
       this.reservation.appointments.push(this.handover);
@@ -187,15 +206,15 @@ export class AdminReservationEditComponent implements OnInit {
     return -1;
   }
 
-  onBack(){
+  onBack() {
     this.router.navigate(['admin-reservations/list']);
   }
 
-  isAcceptedByAdmin(): boolean{
+  isAcceptedByAdmin(): boolean {
     return this.reservation.adminStatus.toString() === 'Accepted';
   }
 
-  isAcceptedByUser(): boolean{
+  isAcceptedByUser(): boolean {
     return this.reservation.userStatus.toString() === 'Accepted';
   }
 
@@ -203,9 +222,79 @@ export class AdminReservationEditComponent implements OnInit {
     return (this.reservation.userStatus === Status.Rejected || this.reservation.adminStatus === Status.Rejected);
   }
 
+  getLastWorkDateAppointment() {
+    let tempAppointment: AppointmentInterface;
+    if (this.duringWork.length > 0) {
+      tempAppointment = this.duringWork[0];
+      for (const workDate of this.duringWork) {
+        const strDate = workDate.day;
+        if (tempAppointment.day !== strDate) {
+          tempAppointment = this.largerDateStr(tempAppointment.day, strDate) === tempAppointment.day ? tempAppointment : workDate;
+        } else {
+          const temp = tempAppointment.day.split(':');
+          const temp2 = workDate.day.split(':');
+          tempAppointment = +temp[0] < +temp2[0] ? workDate :
+            +temp[0] === +temp2[0] && +temp[1] < +temp2[1] ? workDate : tempAppointment;
+        }
+      }
+    }
+    return tempAppointment;
+  }
+
+  getFirsWorkDateAppointment() {
+    let tempAppointment: AppointmentInterface;
+    if (this.duringWork.length > 0) {
+      tempAppointment = this.duringWork[0];
+      for (const workDate of this.duringWork) {
+        const strDate = workDate.day;
+        if (tempAppointment.day !== strDate) {
+          tempAppointment = this.largerDateStr(tempAppointment.day, strDate) === tempAppointment.day ? workDate : tempAppointment ;
+        } else {
+          const temp = tempAppointment.day.split(':');
+          const temp2 = workDate.day.split(':');
+          tempAppointment = +temp[0] > +temp2[0] ? workDate :
+            +temp[0] === +temp2[0] && +temp[1] > +temp2[1] ? workDate : tempAppointment;
+        }
+      }
+    }
+    return tempAppointment;
+  }
+
+  largerAppointment(app1: AppointmentInterface, app2: AppointmentInterface) {
+    let tempApp: AppointmentInterface;
+    if (app1.day !== (app2.day)) {
+      tempApp = this.largerDateStr(app1.day, app2.day) === app1.day ? app1 : app2;
+    } else {
+      const temp = app1.time.split(':');
+      const temp2 = app2.time.split(':');
+      tempApp = +temp[0] < +temp2[0] ? app2 :
+        +temp[0] === +temp2[0] && +temp[1] < +temp2[1] ? app2 : app1;
+    }
+    return tempApp;
+  }
+
+  largerDateStr(d1: string, d2: string) {
+    const temp1: string[] = d1.split('-');
+    const temp2: string[] = d2.split('-');
+    if (+temp1[0] < +temp2[0]) {
+      return d2;
+    } else if (+temp1[0] === +temp2[0]) {
+      if (+temp1[1] < +temp2[1]) {
+        return d2;
+      } else if (+temp1[1] === +temp2[1]) {
+        if (+temp1[2] < +temp2[2]) {
+          return d2;
+        } else {
+          return d1;
+        }
+      }
+    }
+    return d1;
+  }
 
 
-  init(){
+
+  init() {
 
   }
 }

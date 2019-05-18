@@ -23,12 +23,12 @@ export class SigninComponent implements OnInit {
     this.user = {email: '', password: ''};
   }
 
-  async onSignin(){
+  onSignin(){
     console.log(this.signinForm);
     this.user.email = this.signinForm.value.email;
     this.user.password = this.signinForm.value.password;
 
-    await this.userService.login(this.user).then((response) => {
+    this.userService.login(this.user).then((response) => {
       this.router.navigate(['home']);
     });
 

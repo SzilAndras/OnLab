@@ -51,7 +51,6 @@ export class TimeTableComponent implements OnInit, OnChanges {
 
   refreshTimeTable(){
     this.timeTable = [];
-    console.log(this.timeTable);
     for (let i = 0; i < 15; i++) {
       const temp = (8 + (i) * 0.5 );
       this.timeTable.push({
@@ -60,9 +59,7 @@ export class TimeTableComponent implements OnInit, OnChanges {
         time: (
         '' + (temp - temp % 1) + ':' + (temp % 1 > 0 ? '30' : '00')),
       isCurrent: false});
-      console.log(this.timeTable);
     }
-    console.log(this.timeTable);
 
     this.getResAppoints();
   }
@@ -98,7 +95,6 @@ export class TimeTableComponent implements OnInit, OnChanges {
       }
       this.selected.emit(this.selectedAppointments);
     }
-    console.log(this.timeTable);
     this.refreshAlreadySelected(idx);
   }
 
@@ -142,7 +138,6 @@ export class TimeTableComponent implements OnInit, OnChanges {
   }
 
   refreshAlreadySelected(idx: number){
-    console.log(this.timeTable);
     const cell = this.timeTable[idx];
     if (this.mode === 'single'){
       let isChosen = false;
@@ -206,7 +201,6 @@ export class TimeTableComponent implements OnInit, OnChanges {
   }
 
   getDateAppointments(){
-    console.log(this.timeTable);
     const dateStr = this.datepipe.transform(this.date, 'yyyy-MM-dd');
     this.appointmentHttpService.getDateAppointments(dateStr).subscribe(
       (dateApp) => {
@@ -226,7 +220,6 @@ export class TimeTableComponent implements OnInit, OnChanges {
               }
             }
           }
-          console.log(this.timeTable);
           this.refreshAlreadySelected(this.timeTable.indexOf(cell));
         }
 
@@ -241,8 +234,6 @@ export class TimeTableComponent implements OnInit, OnChanges {
   isSelectedIncludes(appointment: AppointmentInterface) {
     for (const app of this.selectedAppointments) {
       if (app.time === appointment.time && app.day === appointment.day) {
-        console.log(app.day);
-        console.log(appointment.day);
         return true;
       }
     }

@@ -4,13 +4,13 @@
       <th *ngFor="let c of timeTable; let i = index" > {{c.time}}</th>
     </tr>
     <tr class="table">
-      <td *ngFor="let cell of timeTable; let j = index"
-          (click)="onCellSelected(j)">
-        <p *ngIf="isSelectable(j) && cell.status !== 'Chosen'" class="empty">{{getCellText(j)}}</p>
-        <p *ngIf="isSelectable(j) && cell.status === 'Chosen'" class="chosen">{{getCellText(j)}}</p>
-        <p *ngIf="!isSelectable(j) && cell.status === 'Chosen'" class="chosen-not-allowed">{{getCellText(j)}}</p>
-        <p *ngIf="!isSelectable(j) && cell.status !== 'Chosen'" class="reserved">{{getCellText(j)}}</p>
-      </td>
+      <ng-container *ngFor="let cell of timeTable; let j = index">
+        <td *ngIf="isSelectable(j) && cell.status !== 'Chosen'" class="empty" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
+        <td *ngIf="isSelectable(j) && cell.status === 'Chosen'" class="chosen" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
+        <td *ngIf="!isSelectable(j) && cell.status === 'Chosen'" class="chosen-not-allowed" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
+        <td *ngIf="!isSelectable(j) && cell.status !== 'Chosen'" class="reserved" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
+      </ng-container>
+
     </tr>
   </table>
 

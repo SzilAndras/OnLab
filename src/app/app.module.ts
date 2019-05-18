@@ -57,7 +57,8 @@ const appRouts: Routes = [
       {path: 'list', component: AdminReservationActualComponent}
     ]},
   {path: 'signup', component: SignupComponent},
-  {path: 'signin', component: SigninComponent}
+  {path: 'signin', component: SigninComponent},
+  {path: '', component: HomeComponent, children: [{path: 'news', component: NewsComponent}]}
 ];
 
 @NgModule({

@@ -32,7 +32,7 @@ export class SignupComponent implements OnInit {
     };
   }
 
-  async onSignup() {
+  onSignup() {
     this.user = {
       email: this.signupForm.value.email,
       fullName: this.signupForm.value.fullName,
