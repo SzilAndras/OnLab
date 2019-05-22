@@ -1,19 +1,16 @@
 <div *ngIf="timeTable !== undefined && reservationAppointments !== undefined" class="table-responsive">
   <table class="table">
     <tr class="table table-bordered tab">
-      <th *ngFor="let c of timeTable; let i = index" > {{c.time}}</th>
+      <th *ngFor="let c of timeTable; let i = index" class="text-center"> {{c.time}}</th>
     </tr>
     <tr class="table">
       <ng-container *ngFor="let cell of timeTable; let j = index">
-        <td *ngIf="isSelectable(j) && cell.status !== 'Chosen'" class="empty" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
-        <td *ngIf="isSelectable(j) && cell.status === 'Chosen'" class="chosen" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
-        <td *ngIf="!isSelectable(j) && cell.status === 'Chosen'" class="chosen-not-allowed" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
-        <td *ngIf="!isSelectable(j) && cell.status !== 'Chosen'" class="reserved" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
+        <td *ngIf="isSelectable(j) && cell.status !== 'Chosen'" class="text-center empty" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
+        <td *ngIf="isSelectable(j) && cell.status === 'Chosen'" class="text-center chosen" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
+        <td *ngIf="!isSelectable(j) && cell.status === 'Chosen'" class="text-center chosen-not-allowed" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
+        <td *ngIf="!isSelectable(j) && cell.status !== 'Chosen'" class="text-center reserved" (click)="onCellSelected(j)">{{getCellText(j)}}</td>
       </ng-container>
-
     </tr>
   </table>
-
 </div>
-<p *ngFor="let app of selectedAppointments"> {{app.type}} {{app.state}}</p>
-<!--ngClass="{{cell.status === 'Selected' ? 'info ' : (cell.status === 'Reserved' ? 'danger' : 'success')}}"-->
+

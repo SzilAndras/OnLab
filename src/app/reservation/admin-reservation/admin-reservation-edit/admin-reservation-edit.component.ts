@@ -89,6 +89,13 @@ export class AdminReservationEditComponent implements OnInit {
     return values;
   }
 
+  isFull() {
+    const current = this.duringWork.length * 30;
+    console.log(current);
+    console.log(this.valuesSum().timeSum);
+    return current <= this.valuesSum().timeSum;
+  }
+
   onHandoverSelected(appointment: AppointmentInterface[]) {
     if (this.largerAppointment(this.getLastWorkDateAppointment(), appointment[0]).type !== appointment[0].type){
       this.handoverDate = new Date(this.getLastWorkDateAppointment().day);
@@ -123,7 +130,7 @@ export class AdminReservationEditComponent implements OnInit {
   onDuringWorkSelected(appointment: AppointmentInterface[]) {
     if (this.isDuringWorkIncludes(appointment[0])) {
       this.duringWork.splice(this.indexInDuringWork(appointment[0]), 1);
-    } else {
+    } else if (this.isFull()) {
       this.duringWork.push(appointment[0]);
       if(this.largerAppointment(appointment[0], this.takeover).type === appointment[0].type){
         if (!(this.handoverDate !== undefined) || !(this.handover !== undefined)){

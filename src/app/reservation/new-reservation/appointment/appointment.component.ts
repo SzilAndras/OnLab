@@ -56,7 +56,6 @@ export class AppointmentComponent implements OnInit{
   }
 
   onTakeoverSelected(appointments: AppointmentInterface[]){
-    console.log(appointments);
     this.selectedTakeovers = appointments;
   }
 

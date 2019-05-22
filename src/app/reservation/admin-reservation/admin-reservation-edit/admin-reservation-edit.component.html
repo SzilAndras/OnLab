@@ -30,6 +30,10 @@
       </ul>
     </div>
   </div>
+  <div *ngIf="reservation.comments.length > 0 && reservation.comments[0].comment !== ''">
+    <h4>Megjegyzés:</h4>
+    <p>{{reservation.comments[0].comment}}</p>
+  </div>
   <hr>
 
   <div>
@@ -87,8 +91,20 @@
     <div *ngIf="!(reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected())">
       <p>Átvétel: </p>
       <div *ngIf="takeover !== undefined; else none">
-        {{takeover.day | date: 'yyyy/MM/dd'}}
-        {{takeover.time}}
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Dátum</th>
+            <th>Időpont</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="form-group">
+            <td>{{takeover.day | date: 'yyyy/MM/dd'}}</td>
+            <td>{{takeover.time}}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
       <button *ngIf="isEdited.takeover === false" class="btn btn-primary" (click)="isEdited.takeover = true">Szerkesztés</button>
       <div *ngIf="isEdited.takeover">
@@ -112,11 +128,25 @@
 
     <div *ngIf="!(reservation.userStatus === 'Accepted' && reservation.adminStatus === 'Pending' && !isRejected()) && takeover !== undefined">
       <p>Munka: </p>
+      <div>
+        <p *ngIf="!isFull()">Szükséges idő kiválasztva</p>
+        <p *ngIf="isFull()">Még fennmaradó idő: {{-duringWork.length * 30 + valuesSum().timeSum}} perc</p>
+      </div>
       <div *ngIf="duringWork[0] !== undefined; else none">
-        <div *ngFor="let aw of duringWork">
-          day: {{aw.day | date: 'yyyy/MM/dd'}};
-          time: {{aw.time}}
-        </div>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Dátum</th>
+            <th>Időpont</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="form-group" *ngFor="let aw of duringWork">
+            <td>{{aw.day | date: 'yyyy/MM/dd'}}</td>
+            <td>{{aw.time}} óra</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
 
       <button *ngIf="isEdited.works === false" class="btn btn-primary" (click)="isEdited.works = true">Szerkesztés</button>
@@ -146,8 +176,20 @@
     <div *ngIf="takeover !== undefined && duringWork.length > 0">
       <p>Átadás: </p>
       <div *ngIf="handover !== undefined; else none ">
-        {{handover.day | date: 'yyyy/MM/dd'}}
-        {{handover.time}}
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Dátum</th>
+            <th>Időpont</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="form-group">
+            <td>{{handover.day | date: 'yyyy/MM/dd'}}</td>
+            <td>{{handover.time}}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
 
       <button *ngIf="isEdited.handover === false" class="btn btn-primary" (click)="isEdited.handover = true">Szerkesztés</button>
